@@ -21,14 +21,20 @@
 ### Game Design
 
 #### Objective
-[explain the goal of the game]
+The goal of Sushi Neco game is to save a cat from being hit by chopstics, by kicking off one sushi at a time from sushi tower> The cat has a health bar which is decreasing each second, and every punched suchi ads a portion to it.
 
 #### Gameplay Mechanics
-[detail the game mechanics, do not include anything about theme/artwork]
-
+- start the game(press the play button)
+- punch first sushi
+- wait for a chopstick to get close
+- tap to the side, opposite to copstick's location
+- repeat 
 #### Level Design
-[describe what a typical level or puzzle would look like]
-
+- randomly generated sushi type
+- each new game will start with new background
+- chipsticks will hold sifferent items
+- cat's appearence will be customizable
+- each 20 scores will speed up health decreasing
 [Back to top ^](#)
 
 ---
