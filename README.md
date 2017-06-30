@@ -42,10 +42,14 @@ The goal of Sushi Neco game is to save a cat from being hit by chopstics, by kic
 ### Technical
 
 #### Scenes
-* [list the different scenes/screens used in the game]
-
+- the menu will include plau button, high score, last score lables
+- game scene will include pause button, highsscore, and current score lables
+- pause screen will include resure and restart buttons, as well as exit button, high score and current score lables
+- lose screne will include restart and exit buttons, high and current score lables
 #### Controls/Input
-[describe the control scheme used in the game]
+- there will be only two control actions: left and right tap
+- left tap will make cat move left and punch sushi away from it(to the right side)
+- right tap will do exactly the opposite 
 
 #### Classes/SKS
 * Classes
