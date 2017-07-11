@@ -21,13 +21,13 @@
 ### Game Design
 
 #### Objective
-The goal of *Game's Name* is to control a diver to dive into river water and collect items that people've dropped. Depending on the initial cost and state of founded item you get money for it, then money could be spend to buy new, more profecional equipement that will improve your dive experience. On his way the diver will meet number of obstacles like: fishing nets, hooks, boats, rocks, seaweed.
+The goal of *Game's Name* is to control a diver to swim into river's water and collect dropped items. Depending on the initial cost and state of founded item player exchanges it on money at the end of each level, then money could be spend to buy new, more specialized equipement, that will improve his dive experience. On his way the diver will meet obstacles as: fishing nets, hooks, boats, rocks, seaweed, etc.
 
 #### Gameplay Mechanics
-The game is infinite runner(swimmer), where player controls the diver with hold action. The hold action will make diver swim deeper into the river to collect items that lay on the bottom. Total worth of collected items calculated in the end of each round and sums into player's savings. The round can ends either by player's decision or, when the diver runs out of oxygen. The erned money could be spend of upgreading oxygen chamber's capasity, that will lead to longer dives, or better diving suit, that will improve dive speed, etc. On his way the diver will meet number of obsicles that will stop him(fishing nets, seaweed, fishing hooks) or reduce his oxygen reserve(boats, rocks). When stuck inside fishing net, fishing hook or seaweed the diver go even deeper, when hit by rock or boat he stops for a second, but dont go any deeper. Net roots for 4 secnds, seaweed for 3, and hook for 2. The oxygen level is automatialy re-filled, while the diver is on or above water's surface. Boats' appearence will be alarmed three seconds before, they will be long, so the player will have to spend all his time under water, while it is still on the screen, alarm warns the player to fill the oxigen level to maximum.
+The game is infinite runner(swimmer), where player controls the diver with press and hold action. The control action will make diver swim deeper to the bottom of the river to collect items. Total worth of collected items will be calculated in the end of each round and sums into player's current savings. The round can end either by player's decision or when the diver runs out of oxygen. The erned money could be spend of upgreading oxygen chamber's capasity, that will allow diver to stay under water dor longer time perion; or better diving suit, that will improve dive speed. On his way the diver will meet number of obsicles that will somehow affect diver's performance. He can be stuck inside fishing net, fishing hook or seaweed which will pull him even deeper into the river, forcing player to return to the surface; when hit by rock or boat he stops for a second, looses sertain amount of oxygen, but don't go any deeper. Fishing net roots for 4 seconds, seaweed for 3, and hook for 2. The oxygen level is automatialy re-filled, while the diver remains on or above water's surface. Boats' appearence will be alarmed three seconds ahead. Boats will be long, and as diver cannot reach the air, he will have to spend the time under water, whating for boat to pass. The other alarm warns the player to fill the oxigen, while under 15% mark.
  
 #### Level Design
-There will be a long level tamplate, that is repeats infinitefly, however, it does affect obstacle generation. Diver won't be able to rise above water level or dive deeper than ground level. The x position of diver is always constant, but world's scrolling speed will decreas, when he gets hit or stuck in traps, to make a illusion of loosing speed. The scroll speed will rise by 0.1 every second a hero is alive. The further you go the longer will obstacles stun you.
+There will be a long level tamplate, that is repeats infinitefly, however, obstacle are generated independently. Diver won't be able to rise above water level or dive deeper than ground level. The x position of diver is always remains constant, while world's scrolling speed will decrease, when he is hit or gets stuck, to make a illusion of speed loss. The scroll speed will rise by 0.1 every second a hero is alive, this featre will assure the player never gets boared as the game gets harder. The further you go the longer will obstacles stun you, this feature well keep player tense thourgout entire game.
 [Back to top ^](#)
 
 ---
@@ -72,8 +72,8 @@ Monday:
 - Analys
 - Idea development
 - GDD
-Tuesday: --------------------------------------------------------------------------------------------------------------------| 3 and a half hours overall
-- Buld Game Scene: ----------------------------------------------------------------------------------------------------------| 2 hour total
+Tuesday: ------------------------------------------------------------------------------------------------| 3 and a half hours overall
+- Buld Game Scene: --------------------------------------------------------------------------------------| 2 hour total
     - add ground node --------------|
     - add water node ---------------|
     - add hero node ----------------|
@@ -107,13 +107,13 @@ Tuesday: -----------------------------------------------------------------------
         - different heights --------------------------------------------------------|
         - ununiform surface --------------------------------------------------------|
     - add objectives ---------------------------------------------------------------|
-- Build Main Menu: ----------------------------------------------------------------------------------------------------------| 10 minutes total
+- Build Main Menu: --------------------------------------------------------------------------------------| 10 minutes total
     - add game's name node --------|
     - add settings button node ----|
     - add touch node --------------| 10 minutes 
     - add high distance label -----|
     - add money counter label -----|
-- Build Pause Scene: --------------------------------------------------------------------------------------------------------| 20 minutes total
+- Build Pause Scene: ------------------------------------------------------------------------------------| 20 minutes total
     - add resume button node -------| 
     - add restart button node ------| 
     - add shop button node ---------|
@@ -123,7 +123,7 @@ Tuesday: -----------------------------------------------------------------------
     - add current distance label ---|
     - add money counter label ------|
     - add "Pause" label ------------|
-- Build Settings Scene: -----------------------------------------------------------------------------------------------------| 30 minutes total
+- Build Settings Scene: ---------------------------------------------------------------------------------| 30 minutes total
     - add game music label -----------------|
     - add sound effects label --------------|
     - add delete game results label --------|
@@ -137,7 +137,7 @@ Tuesday: -----------------------------------------------------------------------
         - add "ok" button node     (inside) ---------------| 10 mintes
         - add "cancel" button node (inside) ---------------|
     - add go back button node -----------------------------|
-- Build Shop Scene: -------------------------------------------------------------------------------------------------------- | 30 minutes total
+- Build Shop Scene: --------------------------------------------------------------------------------------| 30 minutes total
     - add shop background node ----|
     - add items icon nodes: -------|
         - oxygen chamber ----------|
