@@ -73,40 +73,40 @@ Monday:
 - Idea development
 - GDD
 Tuesday:
-- Buld Game Scene: 
-    - add ground node
-    - add water node
-    - add hero node
-    - add touch node
-    - add restarn button node
-    - add pause button node
-    - add high distance labe
-    - add current distance label
-    - add money counter label
-    - add start game counter label(set isHidden = false one at a time):
-        - add "3" label
-        - add "2" label
-        - add "1" label
-        - add "Start" label
-    - add death lalel
-    - add death window node(set to hidden):
-        - add main menu button node  (inside)
-        - add restart button node    (inside)
-        - add shop button node       (inside)
-        - add settings button node   (inside)
-        - add high distance label    (inside)
-        - add current distance label (inside)
-        - add money counter label    (inside)
-        - add "You are dead" label   (inside)
-    - implement reverce physics
-    - set max hero y location to water node height
-    - wave motion illusion:
-        - if hero node reaches water node's max height the y speed = -10 for 1 sec
-    - add simple obstacles
-    - add simple level tamplate:
-        - different heights
-        - ununiform surface
-    - add objectives
+- Buld Game Scene: --------------------------------------------------------| 4 hour total
+    - add ground node --------------|
+    - add water node ---------------|
+    - add hero node ----------------|
+    - add touch node ---------------|
+    - add restarn button node ------| one hour
+    - add pause button node --------|
+    - add high distance labe -------|
+    - add current distance label ---|
+    - add money counter label ------|
+    - add start game counter label(set isHidden = false one at a time): -|
+        - add "3" label -------------------------------------------------|
+        - add "2" label -------------------------------------------------|
+        - add "1" label -------------------------------------------------| 30 minutes
+        - add "Start" label ---------------------------------------------|
+    - add death lalel ---------------------------------------------------|
+    - add death window node(set to hidden): ----|
+        - add main menu button node  (inside) --|
+        - add restart button node    (inside) --|
+        - add shop button node       (inside) --|
+        - add settings button node   (inside) --| one hour
+        - add high distance label    (inside) --|
+        - add current distance label (inside) --|
+        - add money counter label    (inside) --|
+        - add "You are dead" label   (inside) --|
+    - implement reverce physics ----------------------------------------------------|
+    - set max hero y location to water node height ---------------------------------|
+    - wave motion illusion: --------------------------------------------------------|
+        - if hero node reaches water node's max height the y speed = -10 for 1 sec -|
+    - add simple obstacles ---------------------------------------------------------| hour and a half
+    - add simple level tamplate: ---------------------------------------------------|
+        - different heights --------------------------------------------------------|
+        - ununiform surface --------------------------------------------------------|
+    - add objectives ---------------------------------------------------------------|
 - Build Main Menu:
     - add game's name node
     - add settings button node
