@@ -72,13 +72,13 @@ Monday:
 - Analys
 - Idea development
 - GDD
-Tuesday:
-- Buld Game Scene: ----------------------------------------------------------------------------------------------------------| 4 hour total
+Tuesday: --------------------------------------------------------------------------------------------------------------------| 3 and a half hours overall
+- Buld Game Scene: ----------------------------------------------------------------------------------------------------------| 2 hour total
     - add ground node --------------|
     - add water node ---------------|
     - add hero node ----------------|
     - add touch node ---------------|
-    - add restarn button node ------| one hour
+    - add restarn button node ------| 30 minutes
     - add pause button node --------|
     - add high distance labe -------|
     - add current distance label ---|
@@ -86,14 +86,14 @@ Tuesday:
     - add start game counter label(set isHidden = false one at a time): -|
         - add "3" label -------------------------------------------------|
         - add "2" label -------------------------------------------------|
-        - add "1" label -------------------------------------------------| 30 minutes
+        - add "1" label -------------------------------------------------| 10 minutes
         - add "Start" label ---------------------------------------------|
     - add death lalel ---------------------------------------------------|
     - add death window node(set to hidden): ----|
         - add main menu button node  (inside) --|
         - add restart button node    (inside) --|
         - add shop button node       (inside) --|
-        - add settings button node   (inside) --| one hour
+        - add settings button node   (inside) --| 30 minutes
         - add high distance label    (inside) --|
         - add current distance label (inside) --|
         - add money counter label    (inside) --|
@@ -102,7 +102,7 @@ Tuesday:
     - set max hero y location to water node height ---------------------------------|
     - wave motion illusion: --------------------------------------------------------|
         - if hero node reaches water node's max height the y speed = -10 for 1 sec -|
-    - add simple obstacles ---------------------------------------------------------| hour and a half
+    - add simple obstacles ---------------------------------------------------------| 50 minutes
     - add simple level tamplate: ---------------------------------------------------|
         - different heights --------------------------------------------------------|
         - ununiform surface --------------------------------------------------------|
@@ -137,20 +137,20 @@ Tuesday:
         - add "ok" button node     (inside) ---------------| 10 mintes
         - add "cancel" button node (inside) ---------------|
     - add go back button node -----------------------------|
-- Build Shop Scene:
-    - add shop background node
-    - add items icon nodes:
-        - oxygen chamber
-        - diving suit
-    - add "Buy" button nodes 
-    - add price labels
-    - add current index nodes
-    - add go back button node
-    - add setting button node
-    - add high distance label
-    - add current distance label
-    - add money counter label
-    - add "Shop" lable
+- Build Shop Scene: -------------------------------------------------------------------------------------------------------- | 30 minutes total
+    - add shop background node ----|
+    - add items icon nodes: -------|
+        - oxygen chamber ----------|
+        - diving suit -------------|
+    - add "Buy" button nodes ------|
+    - add price labels ------------|
+    - add current index nodes -----| 30 minutes
+    - add go back button node -----|
+    - add setting button node -----|
+    - add high distance label -----|
+    - add current distance label --|
+    - add money counter label -----|
+    - add "Shop" lable ------------|
 
 
 * [goals for the week]
