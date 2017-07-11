@@ -73,7 +73,7 @@ Monday:
 - Idea development
 - GDD
 Tuesday:
-- Buld Game Scene: --------------------------------------------------------| 4 hour total
+- Buld Game Scene: ----------------------------------------------------------------------------------------------------------| 4 hour total
     - add ground node --------------|
     - add water node ---------------|
     - add hero node ----------------|
@@ -107,36 +107,36 @@ Tuesday:
         - different heights --------------------------------------------------------|
         - ununiform surface --------------------------------------------------------|
     - add objectives ---------------------------------------------------------------|
-- Build Main Menu:
-    - add game's name node
-    - add settings button node
-    - add touch node
-    - add high distance label
-    - add money counter label
-- Build Pause Scene:
-    - add resume button node
-    - add restart button node
-    - add shop button node
-    - add settings button node
-    - add main menu button node
-    - add high distance label
-    - add current distance label
-    - add money counter label
-    - add "Pause" label
-- Build Settings Scene:
-    - add game music label
-    - add sound effects label
-    - add delete game results label
-    - add game music "on" switch node
-    - add game music "off" switch node
-    - add sound effects "on" switch node
-    - add sound effects "off" switch node
-    - add delete game results button node
-    - add delete game results window node(set to hidden):
-        - add question test label  (inside)
-        - add "ok" button node     (inside)
-        - add "cancel" button node (inside)
-    - add go back button node
+- Build Main Menu: ----------------------------------------------------------------------------------------------------------| 10 minutes total
+    - add game's name node --------|
+    - add settings button node ----|
+    - add touch node --------------| 10 minutes 
+    - add high distance label -----|
+    - add money counter label -----|
+- Build Pause Scene: --------------------------------------------------------------------------------------------------------| 20 minutes total
+    - add resume button node -------| 
+    - add restart button node ------| 
+    - add shop button node ---------|
+    - add settings button node -----|
+    - add main menu button node ----| 20 minutes total
+    - add high distance label ------|
+    - add current distance label ---|
+    - add money counter label ------|
+    - add "Pause" label ------------|
+- Build Settings Scene: -----------------------------------------------------------------------------------------------------| 30 minutes total
+    - add game music label -----------------|
+    - add sound effects label --------------|
+    - add delete game results label --------|
+    - add game music "on" switch node ------| 20 minutes
+    - add game music "off" switch node -----| 
+    - add sound effects "on" switch node ---|
+    - add sound effects "off" switch node --|
+    - add delete game results button node --|
+    - add delete game results window node(set to hidden): -|
+        - add question test label  (inside) ---------------|
+        - add "ok" button node     (inside) ---------------| 10 mintes
+        - add "cancel" button node (inside) ---------------|
+    - add go back button node -----------------------------|
 - Build Shop Scene:
     - add shop background node
     - add items icon nodes:
