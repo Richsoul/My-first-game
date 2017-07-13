@@ -191,14 +191,26 @@ Thursday:
 - Fix interaction of hero with other objects
 Friday: 
 - Still fixing the objective spawn, but also scrollWorld func
-- Still wok on intersction with objectskdfjalkfasldfjal/df
-
-
+- Still work on interaction with objects
 * [goals for the week]
 
 #### Week 2
 _finishing a playable build_
 * [goals for the week, should be finishing a playable game]
+Monday: 
+- work on score labels
+- add other objects to updateObstacles func
+Tuesday:
+- make itemSpawner function 
+- make upgrade feature
+Wednesday:
+- return to previous page button
+- keep working on itemSpawner(different reactions on every obstacle)
+Thursday:
+- make hero start swiming from beach 
+- delete all results, upgrades button
+Friday:
+- polish everything upolished, undone
 
 #### Week 3
 * [goals for the week]
