@@ -16,19 +16,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case start, running, pause, dead, mainMenu
     }
     enum Obstacle {
-        case fihsingNet, rock, boat, seaweed
+        case fishNet, rock, boat, seaweed, none
+    }
+    enum HeroState {
+        case rooted, swimming
     }
     var gameState: GameState = .running
+    var heroState: HeroState = .swimming
+    var obstacleKind: Obstacle = .none
     var ground:      SKSpriteNode!
+    var ground2:      SKSpriteNode!
     var water:       SKSpriteNode!
     var hero:        SKSpriteNode!
     var deathWindow: SKSpriteNode!
     var restartButton: MSButtonNode!
-    //var restartButton2: MSButtonNode!
-    //var menuButton:    MSButtonNode!
-    //var shopButton:    MSButtonNode!
     var pauseButton:   MSButtonNode!
-    //var settingsButton:MSButtonNode!
     var button: MSButtonNode!
     var highestDistanceScore: SKLabelNode!
     var currentDistanceScore: SKLabelNode!
@@ -41,9 +43,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var scrollLayer:    SKNode!
     var obstacleLayer:  SKNode!
     var obstacleSource: SKNode!
-    var scrollSpeed: CGFloat = 200
+    var scrollSpeed: CGFloat = 80
     let fixedDelta: CFTimeInterval = 1.0 / 60.0
-    var spawnTimer: CFTimeInterval = 0
+    var spawnTimer: CFTimeInterval = 3
+    var rootTime: CFTimeInterval = 0
     var holding: Bool = false
     var diveForce = -40
     var maxVelocity: CGFloat = -70
@@ -51,13 +54,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var net1: SKNode!
     var net2: SKNode!
     var net3: SKNode!
-    var groundCount = 1
     
     override func didMove(to view: SKView) {
         
         gameState = .start
         physicsWorld.contactDelegate = self
         ground = childNode(withName: "//ground") as! SKSpriteNode
+        ground2 = childNode(withName: "//ground2") as! SKSpriteNode
         water = childNode(withName: "water") as! SKSpriteNode
         hero = childNode(withName: "hero") as! SKSpriteNode
         deathWindow = childNode(withName: "deathWindow") as! SKSpriteNode
@@ -84,7 +87,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         counter1.isHidden = true
         deathWindow.isHidden = true
         hero.position.x = -236
-        
+        scrollSpeed = 80
+        diveForce = -40
+        maxVelocity = -70
+        scene?.physicsWorld.gravity = CGVector(dx: 0, dy: 1.5)
         buttonFunc(fileName: "//restartButton", direction: "GameScene")
         buttonFunc(fileName: "//restart2Button", direction: "GameScene")
         buttonFunc(fileName: "//pauseButton", direction: "PauseScene")
@@ -104,8 +110,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let nodeB = contactB.node as! SKSpriteNode
         /* Check if either physics bodies was a seal */
         if contactA.categoryBitMask == 2 || contactB.categoryBitMask == 2 {
-            
+            rootTime = 0
+            obstacleKind = .fishNet
+                scrollSpeed = 20
+                diveForce = -40/3
+                maxVelocity = -70/3
+                scene?.physicsWorld.gravity = CGVector(dx: 0, dy: 1.5/5)
+           
         }
+        
     }
     
     
@@ -125,24 +138,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func scrollWorld() {
-        
         scrollLayer.position.x -= scrollSpeed * CGFloat(fixedDelta)
-        
-        let newGround = ground.copy() as! SKSpriteNode
-        let groundPosition = scrollLayer.convert(ground.position, to: self)
-        let newGroundPosition = scrollLayer.convert(newGround.position, to: self)
-        let newPosition = CGPoint(x: (self.size.width / 2) + ground.size.width, y: groundPosition.y)
-        if groundPosition.x <= -ground.size.width/2 + 285{
-            ground.position = self.convert(newPosition, to: self.scrollLayer)
-            scrollLayer.addChild(newGround)
-            newGround.position = self.convert(newPosition, to: self.scrollLayer)
+        for ground in scrollLayer.children as! [SKSpriteNode] {
+            
+            let groundPosition = scrollLayer.convert(ground.position, to: self)
+            if groundPosition.x <= -ground.size.width / 2 - 510{
+                let newPosition = CGPoint(x: (self.size.width / 2) + ground.size.width, y: groundPosition.y)
+                ground.position = self.convert(newPosition, to: scrollLayer)
+            }
         }
-        print(groundCount)
-        if newGroundPosition.x <= -newGround.size.width/2 + 285 {
-            newGround.position = self.convert(newPosition, to: self.scrollLayer)
-            //groundCount -= 1
-        }
-        
     }
     
     func updateObstacles() {
@@ -152,32 +156,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for obstacle in obstacleLayer.children as! [SKSpriteNode] {
             
             let obstaclePosition = obstacleLayer.convert(obstacle.position, to: self)
-            if obstaclePosition.x <= -310 {
+            if obstaclePosition.x <= -260 {
                 obstacle.removeFromParent()
             }
             
         }
-        if spawnTimer > 5 {
-            let newObstacle = fishingNet.copy() as! SKNode
+        /*if spawnTimer >= 1.5 {
+            
+            let newObstacle = obstacleSource.copy() as! SKNode
             obstacleLayer.addChild(newObstacle)
-            let n1LBorder = net1.position.x - CGFloat(100)
-            let n1RBorder = net1.position.x + CGFloat(100)
-            let n2LBorder = net2.position.x - CGFloat(50)
-            let n2RBorder = net2.position.x + CGFloat(50)
-            let n3LBorder = net3.position.x - CGFloat(100)
-            let n3RBorder = net3.position.x + CGFloat(100)
-            let randomPosition1 = CGPoint(x: CGFloat.random(min: n1LBorder, max: n1RBorder), y: 25.455)
-            let randomPosition2 = CGPoint(x: CGFloat.random(min: n2LBorder, max: n2RBorder), y: 25.455)
-            let randomPosition3 = CGPoint(x: CGFloat.random(min: n3LBorder, max: n3RBorder), y: 25.455)
-            newObstacle.position = self.convert(randomPosition1, to: obstacleLayer)
-            newObstacle.position = self.convert(randomPosition2, to: obstacleLayer)
-            newObstacle.position = self.convert(randomPosition3, to: obstacleLayer)
+            let randomPosition = CGPoint(x: 352, y: CGFloat.random(min: 234, max: 382))
+            newObstacle.position = self.convert(randomPosition, to: obstacleLayer)
             
             spawnTimer = 0
-        }
+        }*/
     }
-    
-    
+
+
     
     func buttonFunc(fileName: String, direction: String) { //custom button transfer, for any situation я горд собой
         button = childNode(withName: "\(fileName)") as! MSButtonNode
@@ -200,7 +195,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         hero.position.x = -190
         let heroPositionY = hero.position.y
-        let waterSurface = water.size.height/2 - 10
+        let waterSurface = water.size.height/2 - 40
         if heroPositionY > waterSurface + 10 {
             hero.position.y = waterSurface + 10
         }
@@ -232,6 +227,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 hero.physicsBody?.velocity.dy = maxVelocity
             }
         }
-        spawnTimer += 1.0/120.0
+        if obstacleKind == .fishNet {
+        rootTime += 1.0/60.0
+            if rootTime > 5 {
+                scrollSpeed = 80
+                diveForce = -40
+                maxVelocity = -70
+                scene?.physicsWorld.gravity = CGVector(dx: 0, dy: 1.5)
+                obstacleKind = .none
+            }
+            print(rootTime)
+        }
     }
 }

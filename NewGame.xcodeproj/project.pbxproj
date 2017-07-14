@@ -232,6 +232,7 @@
 				TargetAttributes = {
 					0CC87C5E1F1425C800A69973 = {
 						CreatedOnToolsVersion = 8.3.3;
+						DevelopmentTeam = R573VR9DT7;
 						ProvisioningStyle = Automatic;
 					};
 					0CC87C781F1425C800A69973 = {
@@ -464,6 +465,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = R573VR9DT7;
 				INFOPLIST_FILE = NewGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeschool.NewGame;
@@ -476,6 +478,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = R573VR9DT7;
 				INFOPLIST_FILE = NewGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.makeschool.NewGame;

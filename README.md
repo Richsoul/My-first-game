@@ -186,19 +186,19 @@ Wednesday: ---------------------------------------------------------------------
         - goes to settings ----------|
         - resumes the game ----------|
 Thursday:
-- Make all buttons in all scenes work
-- Fix objective spawn 
-- Fix interaction of hero with other objects
+- Make all buttons in all scenes work(1 hour)
+- Fix objective spawn (3 hours)
+- Fix interaction of hero with other objects(3 hours)
 Friday: 
-- Still fixing the objective spawn, but also scrollWorld func
-- Still work on interaction with objects
+- Still fixing the objective spawn, but also scrollWorld func(2 hours)
+- Still work on interaction with objects(5 hours)
 * [goals for the week]
 
 #### Week 2
 _finishing a playable build_
 * [goals for the week, should be finishing a playable game]
 Monday: 
-- work on score labels
+- work on score labels()
 - add other objects to updateObstacles func
 Tuesday:
 - make itemSpawner function 
