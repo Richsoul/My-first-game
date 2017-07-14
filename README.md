@@ -173,12 +173,12 @@ Wednesday: ---------------------------------------------------------------------
         - for ".pause" stop all active actions ------|
     - add update scene func -----|
     - add money counter func ----| half an hour
-- Main Menu: --------------------------------------------------------------------------------------------| 1 hour total
+- Main Menu: --------------------------------------------------------------------------------------------| 1 hour total comlplete
     - add all button actions: --------------| 
         - startArea starts the game --------|
         - settingsButton goes to settings --| 1 hour
         - shoopButton goes to shop ---------|
-- Pause Scene: ------------------------------------------------------------------------------------------| 1.5 hour total
+- Pause Scene: ------------------------------------------------------------------------------------------| 1.5 hour total comlplete
 - add button actions: ---------------|
         - goes to main menu ---------|
         - restarts the game ---------|
@@ -186,12 +186,12 @@ Wednesday: ---------------------------------------------------------------------
         - goes to settings ----------|
         - resumes the game ----------|
 Thursday:
-- Make all buttons in all scenes work(1 hour)
-- Fix objective spawn (3 hours)
-- Fix interaction of hero with other objects(3 hours)
+- Make all buttons in all scenes work(1 hour)comlplete
+- Fix objective spawn (3 hours)comlplete
+- Fix interaction of hero with other objects(3 hours)comlplete
 Friday: 
-- Still fixing the objective spawn, but also scrollWorld func(2 hours)
-- Still work on interaction with objects(5 hours)
+- Still fixing the objective spawn, but also scrollWorld func(5 hours)
+- Still work on interaction with objects(2 hours) comlplete
 * [goals for the week]
 
 #### Week 2

@@ -43,20 +43,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var scrollLayer:    SKNode!
     var obstacleLayer:  SKNode!
     var obstacleSource: SKNode!
-    var scrollSpeed: CGFloat = 80
+    var obstacleNode: SKNode?
+    var scrollSpeed: CGFloat = 60
     let fixedDelta: CFTimeInterval = 1.0 / 60.0
     var spawnTimer: CFTimeInterval = 3
     var rootTime: CFTimeInterval = 0
     var holding: Bool = false
     var diveForce = -40
     var maxVelocity: CGFloat = -70
+    var minVelocity: CGFloat = 70
     var fishingNet: SKSpriteNode!
-    var net1: SKNode!
-    var net2: SKNode!
-    var net3: SKNode!
+    
     
     override func didMove(to view: SKView) {
-        
         gameState = .start
         physicsWorld.contactDelegate = self
         ground = childNode(withName: "//ground") as! SKSpriteNode
@@ -78,9 +77,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         obstacleLayer = self.childNode(withName: "obstacleLayer")
         obstacleSource = self.childNode(withName: "obstacle")
         fishingNet = childNode(withName: "//fishingNet") as! SKSpriteNode
-        net1 = childNode(withName: "//net1")!
-        net2 = childNode(withName: "//net2")!
-        net3 = childNode(withName: "//net3")!
         counterStart.isHidden = true
         counter3.isHidden = true
         counter2.isHidden = true
@@ -101,30 +97,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
-        /* Physics contact delegate implementation */
-        /* Get references to the bodies involved in the collision */
         let contactA:SKPhysicsBody = contact.bodyA
         let contactB:SKPhysicsBody = contact.bodyB
-        /* Get references to the physics body parent SKSpriteNode */
         let nodeA = contactA.node as! SKSpriteNode
         let nodeB = contactB.node as! SKSpriteNode
-        /* Check if either physics bodies was a seal */
         if contactA.categoryBitMask == 2 || contactB.categoryBitMask == 2 {
-            rootTime = 0
             obstacleKind = .fishNet
-                scrollSpeed = 20
-                diveForce = -40/3
-                maxVelocity = -70/3
-                scene?.physicsWorld.gravity = CGVector(dx: 0, dy: 1.5/5)
-           
+            if contactA.categoryBitMask == 2 {
+                obstacleNode = nodeA
+            } else {
+                obstacleNode = nodeB
+            }
         }
         
+        
     }
-    
-    
-    /* override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-     for t in touches { self.touchUp(atPoint: t.location(in: self)) }
-     } */
     
     func playersDeath() {
         if gameState == .dead {
@@ -156,25 +143,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for obstacle in obstacleLayer.children as! [SKSpriteNode] {
             
             let obstaclePosition = obstacleLayer.convert(obstacle.position, to: self)
-            if obstaclePosition.x <= -260 {
+            if obstaclePosition.x <= -300 {
                 obstacle.removeFromParent()
             }
             
         }
-        /*if spawnTimer >= 1.5 {
-            
-            let newObstacle = obstacleSource.copy() as! SKNode
+        if spawnTimer >= 16 {
+            let newObstacle = fishingNet.copy() as! SKSpriteNode
             obstacleLayer.addChild(newObstacle)
-            let randomPosition = CGPoint(x: 352, y: CGFloat.random(min: 234, max: 382))
-            newObstacle.position = self.convert(randomPosition, to: obstacleLayer)
+            let newPosition = CGPoint(x: 400, y: 8)
+            newObstacle.position = self.convert(newPosition, to: obstacleLayer)
             
             spawnTimer = 0
-        }*/
+        }
     }
-
-
     
-    func buttonFunc(fileName: String, direction: String) { //custom button transfer, for any situation я горд собой
+    func buttonFunc(fileName: String, direction: String) { //custom button transfer, for any situation
         button = childNode(withName: "\(fileName)") as! MSButtonNode
         button.selectedHandler = {
             guard let skView = self.view as SKView! else {
@@ -186,9 +170,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             scene.scaleMode = .aspectFit
             skView.presentScene(scene)
         }
-        /* if direction == "GameScene" {
-         scrollSpeed = 100
-         } */
     }
     
     func float() {
@@ -207,6 +188,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func root(){
+        switch obstacleKind{
+        case .fishNet:
+            scrollSpeed = 20
+            diveForce = -40/3
+            maxVelocity = -70/3
+            scene?.physicsWorld.gravity = CGVector(dx: 0, dy: 1.5/5)
+            minVelocity = 70/3
+            break
+        default:
+            scrollSpeed = 60
+            diveForce = -40
+            maxVelocity = -70
+            scene?.physicsWorld.gravity = CGVector(dx: 0, dy: 1.5)
+            minVelocity = 70
+        }
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)  {
         hero.physicsBody?.applyForce(CGVector(dx:0, dy: diveForce))
         holding = true
@@ -220,23 +219,24 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         updateObstacles()
         playersDeath()
         scrollWorld()
+        spawnTimer += fixedDelta
+        let velocityY = hero.physicsBody?.velocity.dy ?? 0
         if holding == true {
             hero.physicsBody?.applyForce(CGVector(dx: 0, dy: diveForce))
-            let velocityY = hero.physicsBody?.velocity.dy ?? 0
             if velocityY < maxVelocity {
                 hero.physicsBody?.velocity.dy = maxVelocity
             }
         }
-        if obstacleKind == .fishNet {
-        rootTime += 1.0/60.0
-            if rootTime > 5 {
-                scrollSpeed = 80
-                diveForce = -40
-                maxVelocity = -70
-                scene?.physicsWorld.gravity = CGVector(dx: 0, dy: 1.5)
+        if velocityY > minVelocity {
+            hero.physicsBody?.velocity.dy = minVelocity
+        }
+        
+        root()
+        if let obstacle = obstacleNode {
+            if !obstacle.intersects(hero) {
                 obstacleKind = .none
+                obstacleNode = nil
             }
-            print(rootTime)
         }
     }
 }
