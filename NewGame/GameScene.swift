@@ -55,7 +55,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var rock:       SKSpriteNode!
     var seaweed:    SKSpriteNode!
     var money = 0
-    var oxygen = 100
+    var oxygen = 100.00
     
     override func didMove(to view: SKView) {
         gameState = .start
@@ -171,7 +171,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if boatSpawnTimer >= 24 {
             let newBoat = boat.copy() as! SKSpriteNode
             obstacleLayer.addChild(newBoat)
-            let newPosition = CGPoint(x: 800, y: 93)
+            let newPosition = CGPoint(x: 800, y: 100)
             newBoat.position = self.convert(newPosition, to: obstacleLayer)
             
             boatSpawnTimer = 0
@@ -218,11 +218,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func oxygenlvl() {
-        if hero.position.y >= 60 {
-            oxygen += 1 / 120
+        if hero.position.y >= 80 {
+            oxygen += 1 / 10
             print(oxygen)
         } else {
-            oxygen -= 1 / 60
+            oxygen -= 1 / 15
             print(oxygen)
         }
         if oxygen > 100 {
@@ -288,6 +288,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         moneyCounterScore.text = String(money)
         oxygenlvl()
-        currentDistanceScore.text = String(oxygen)
+        currentDistanceScore.text = String(Int(oxygen))
+        if oxygen == 0 {
+            gameState = .dead
+        }
     }
 }
