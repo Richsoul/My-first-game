@@ -190,7 +190,7 @@ Thursday:
 - Fix objective spawn (3 hours)comlplete
 - Fix interaction of hero with other objects(3 hours)comlplete
 Friday: 
-- Still fixing the objective spawn, but also scrollWorld func(5 hours)
+- Still fixing the objective spawn, but also scrollWorld func(5 hours) almost
 - Still work on interaction with objects(2 hours) comlplete
 * [goals for the week]
 
@@ -202,18 +202,22 @@ Monday:
 - add other objects to updateObstacles func
 Tuesday:
 - make itemSpawner function 
-- make upgrade feature
+- make upgrade feature for shop scene
 Wednesday:
 - return to previous page button
 - keep working on itemSpawner(different reactions on every obstacle)
 Thursday:
-- make hero start swiming from beach 
-- delete all results, upgrades button
+- make hero start swiming from shallow water
+- "delete all results, upgrades" button
 Friday:
-- polish everything upolished, undone
+- polish everything upolished/undone
+- different kinds of items
 
 #### Week 3
 * [goals for the week]
+Monday:
+- you loose the last item you've collected
+- particle effect of how much money you earned for particular item, when you collect it
 
 #### Week 4
 * [goals for the week, should be finishing all core gameplay]
