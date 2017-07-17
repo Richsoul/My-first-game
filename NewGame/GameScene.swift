@@ -16,16 +16,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case running, dead
     }
     enum Obstacle {
-        case fishNet, rock, boat, seaweed, none
+        case fishNet, boat, seaweed, none
     }
     var gameState: GameState = .running
     var obstacleKind: Obstacle = .none
-    var ground:      SKSpriteNode!
+    var ground:       SKSpriteNode!
     var ground2:      SKSpriteNode!
-    var water:       SKSpriteNode!
-    var hero:        SKSpriteNode!
-    var deathWindow: SKSpriteNode!
-    var restartButton: MSButtonNode!
+    var water:        SKSpriteNode!
+    var hero:         SKSpriteNode!
+    var deathWindow:  SKSpriteNode!
+    var item:         SKSpriteNode!
     var pauseButton:   MSButtonNode!
     var button:        MSButtonNode!
     var highestDistanceScore: SKLabelNode!
@@ -33,25 +33,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var moneyCounterScore:    SKLabelNode!
     var deathSigh:            SKLabelNode!
     var scrollLayer:    SKNode!
+    var boatLayer:      SKNode!
     var obstacleLayer:  SKNode!
     var obstacleSource: SKNode!
     var obstacleNode:   SKNode?
-    let fixedDelta:        CFTimeInterval = 1.0 / 60.0
-    var netSpawnTimer:     CFTimeInterval = 0
-    var boatSpawnTimer:    CFTimeInterval = 0
-    var rockSpawnTimer:    CFTimeInterval = 0
-    var seaweedSpawnTimer: CFTimeInterval = 0
+    var fixedDelta:        CFTimeInterval = 1.0 / 60.0
+    var netSpawnTimer:     CFTimeInterval = 10
+    var boatSpawnTimer:    CFTimeInterval = 10
+    var itemSpawnTimer:    CFTimeInterval = 10
+    var seaweedSpawnTimer: CFTimeInterval = 10
     var holding: Bool = false
     var diveForce = 0
     var scrollSpeed: CGFloat = 0
     var maxVelocity: CGFloat = 0
     var minVelocity: CGFloat = 0
     var fishingNet: SKSpriteNode!
-    var boat:       SKSpriteNode!
-    var rock:       SKSpriteNode!
+    var boat1:       SKSpriteNode!
     var seaweed:    SKSpriteNode!
     var money = 0
-    //var oxygen = 100.00
+    var oxygen = 100.00
+    var distance = 0
     
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
@@ -60,26 +61,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         water = childNode(withName: "water") as! SKSpriteNode
         hero = childNode(withName: "hero") as! SKSpriteNode
         deathWindow = childNode(withName: "deathWindow") as! SKSpriteNode
-        restartButton = childNode(withName: "//restartButton") as! MSButtonNode
         pauseButton = childNode(withName: "pauseButton") as! MSButtonNode
         highestDistanceScore = childNode(withName: "//highestDistanceScore") as! SKLabelNode
         currentDistanceScore = childNode(withName: "//currentDistanceScore") as! SKLabelNode
         moneyCounterScore = childNode(withName: "//moneyCounterScoreGS") as! SKLabelNode
         deathSigh = childNode(withName: "//deathSign") as! SKLabelNode
         scrollLayer = self.childNode(withName: "scrollLayer")
+        boatLayer = self.childNode(withName: "boatLayer")
         obstacleLayer = self.childNode(withName: "obstacleLayer")
         obstacleSource = self.childNode(withName: "obstacle")
         fishingNet = childNode(withName: "//fishingNet") as! SKSpriteNode
-        boat = childNode(withName: "//boat") as! SKSpriteNode
-        rock = childNode(withName: "//rock") as! SKSpriteNode
+        boat1 = childNode(withName: "//boat") as! SKSpriteNode
         seaweed = childNode(withName: "//seaweed") as! SKSpriteNode
+        item = childNode(withName: "//item") as! SKSpriteNode
         deathWindow.isHidden = true
         hero.position.x = -236
         scrollSpeed = 80
         diveForce = -40
         maxVelocity = -70
         scene?.physicsWorld.gravity = CGVector(dx: 0, dy: 1.5)
-        buttonFunc(fileName: "//restartButton", direction: "GameScene")
         buttonFunc(fileName: "//restart2Button", direction: "GameScene")
         buttonFunc(fileName: "//pauseButton", direction: "PauseScene")
         buttonFunc(fileName: "//mainMenuButton", direction: "MainMenu")
@@ -115,7 +115,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if gameState == .dead {
             deathWindow.isHidden = false
             pauseButton.isUserInteractionEnabled = false
-            restartButton.isUserInteractionEnabled = false
             hero.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
             scene?.physicsWorld.gravity = CGVector(dx: 0, dy: -1)
             scrollSpeed = 0
@@ -134,6 +133,26 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func updateBoat() {
+        boatLayer.position.x -= (scrollSpeed + 100) * CGFloat(fixedDelta)
+        for boat in boatLayer.children as! [SKSpriteNode] {
+            
+            let boatPosition = boatLayer.convert(boat.position, to: self)
+            if boatPosition.x <= -530 {
+                boat.removeFromParent()
+            }
+            
+        }
+        if boatSpawnTimer >= 24 {
+            let newBoat = boat1.copy() as! SKSpriteNode
+            boatLayer.addChild(newBoat)
+            let newPosition = CGPoint(x: 800, y: 100)
+            newBoat.position = self.convert(newPosition, to: boatLayer)
+            boatSpawnTimer = 0
+        }
+        
+    }
+    
     func updateObstacles() {
         
         obstacleLayer.position.x -= scrollSpeed * CGFloat(fixedDelta)
@@ -141,35 +160,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for obstacle in obstacleLayer.children as! [SKSpriteNode] {
             
             let obstaclePosition = obstacleLayer.convert(obstacle.position, to: self)
-            if obstaclePosition.x <= -500 {
+            if obstaclePosition.x <= -300 {
                 obstacle.removeFromParent()
             }
             
         }
+        
+        let array: [CGFloat] = [-100, -50, 0, 50, 100]
+        let n = Int(arc4random_uniform(UInt32(array.count)))
         if netSpawnTimer >= 16 {
             let newNet = fishingNet.copy() as! SKSpriteNode
             obstacleLayer.addChild(newNet)
-            let newPosition = CGPoint(x: 400, y: 8)
+            let newPosition = CGPoint(x: 400 + array[n], y: 8)
             newNet.position = self.convert(newPosition, to: obstacleLayer)
-            
             netSpawnTimer = 0
         }
-        if boatSpawnTimer >= 24 {
-            let newBoat = boat.copy() as! SKSpriteNode
-            obstacleLayer.addChild(newBoat)
-            let newPosition = CGPoint(x: 800, y: 100)
-            newBoat.position = self.convert(newPosition, to: obstacleLayer)
-            
-            boatSpawnTimer = 0
-        }
-        if rockSpawnTimer >= 6 {
-            let newRock = rock.copy() as! SKSpriteNode
-            obstacleLayer.addChild(newRock)
+        
+        if itemSpawnTimer >= 10 {
+            let newItem = item.copy() as! SKSpriteNode
+            obstacleLayer.addChild(newItem)
             let newPosition = CGPoint(x: 1000, y: 60)
-            newRock.position = self.convert(newPosition, to: obstacleLayer)
-            newRock.physicsBody?.velocity.dy = CGFloat(-60)
-            
-            rockSpawnTimer = 0
+            newItem.position = self.convert(newPosition, to: obstacleLayer)
+            newItem.physicsBody?.applyForce(CGVector(dx: 0, dy: -60))
+            itemSpawnTimer = 0
         }
     }
     
@@ -206,10 +219,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
    /* func oxygenlvl() {
         if hero.position.y >= 80 {
             oxygen += 1 / 10
-            print(oxygen)
         } else {
             oxygen -= 1 / 15
-            print(oxygen)
         }
         if oxygen > 100 {
             oxygen = 100
@@ -236,6 +247,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             minVelocity = 70
         }
     }
+    func updateDistance() {
+        let previousPosition = ground.position.x
+        print(ground.position.x - previousPosition)
+    }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)  {
         hero.physicsBody?.applyForce(CGVector(dx:0, dy: diveForce))
@@ -248,11 +263,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func update(_ currentTime: TimeInterval) {
         float()
         updateObstacles()
+        updateBoat()
+        updateDistance()
         playersDeath()
         scrollWorld()
         netSpawnTimer += fixedDelta
         boatSpawnTimer += fixedDelta
-        rockSpawnTimer += fixedDelta
+        itemSpawnTimer += fixedDelta
         seaweedSpawnTimer += fixedDelta
         let velocityY = hero.physicsBody?.velocity.dy ?? 0
         if holding == true {
@@ -273,11 +290,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         moneyCounterScore.text = String(money)
-        //oxygenlvl()
-       // currentDistanceScore.text = String(Int(oxygen))
-       // if oxygen == 0 {
-         //   gameState = .dead
-        //}
-
+        /*oxygenlvl()
+        currentDistanceScore.text = String(Int(oxygen))
+        if oxygen == 0 {
+            gameState = .dead
+        }*/
     }
 }
