@@ -13,7 +13,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     enum GameState {
-        case start, running, pause, dead
+        case running, dead
     }
     enum Obstacle {
         case fishNet, rock, boat, seaweed, none
@@ -46,19 +46,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var rockSpawnTimer:    CFTimeInterval = 0
     var seaweedSpawnTimer: CFTimeInterval = 0
     var holding: Bool = false
-    var diveForce = -40
-    var scrollSpeed: CGFloat = 60
-    var maxVelocity: CGFloat = -70
-    var minVelocity: CGFloat = 70
+    var diveForce = 0
+    var scrollSpeed: CGFloat = 0
+    var maxVelocity: CGFloat = 0
+    var minVelocity: CGFloat = 0
     var fishingNet: SKSpriteNode!
     var boat:       SKSpriteNode!
     var rock:       SKSpriteNode!
     var seaweed:    SKSpriteNode!
     var money = 0
-    var oxygen = 100.00
+    //var oxygen = 100.00
     
     override func didMove(to view: SKView) {
-        gameState = .start
         physicsWorld.contactDelegate = self
         ground = childNode(withName: "//ground") as! SKSpriteNode
         ground2 = childNode(withName: "//ground2") as! SKSpriteNode
@@ -98,7 +97,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         buttonFunc(fileName: "//mainMenuButton", direction: "MainMenu")
         buttonFunc(fileName: "//shopButton", direction: "Shop")
         buttonFunc(fileName: "//settingsButton", direction: "Settings")
-        
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
@@ -217,7 +215,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func oxygenlvl() {
+   /* func oxygenlvl() {
         if hero.position.y >= 80 {
             oxygen += 1 / 10
             print(oxygen)
@@ -231,7 +229,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if oxygen < 0 {
             oxygen = 0
         }
-    }
+    }*/
     
     func root(){
         switch obstacleKind{
@@ -287,10 +285,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         moneyCounterScore.text = String(money)
-        oxygenlvl()
-        currentDistanceScore.text = String(Int(oxygen))
-        if oxygen == 0 {
-            gameState = .dead
-        }
+        //oxygenlvl()
+       // currentDistanceScore.text = String(Int(oxygen))
+       // if oxygen == 0 {
+         //   gameState = .dead
+        //}
+
     }
 }
