@@ -197,7 +197,7 @@ _finishing a playable build_
 * [goals for the week, should be finishing a playable game]
 Monday: 
 - work on score labels()
-- add other objects to updateObstacles func
+- add other objects to updateObstacles func(complete)
 - the furthest distance will be displayed in the beggingin of the game, on the wooden namaplate or elsewhere
 Tuesday:
 - make itemSpawner function 

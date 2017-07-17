@@ -103,10 +103,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if contactA.categoryBitMask == 8 || contactB.categoryBitMask == 8 {
             if contactA.categoryBitMask == 8 {
                 nodeA.removeFromParent()
-                
+                money += 1
             } else {
                 nodeB.removeFromParent()
-                
+                money += 1
             }
         }
     }
@@ -248,8 +248,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func updateDistance() {
-        let previousPosition = ground.position.x
-        print(ground.position.x - previousPosition)
+        distance = Int(abs(scrollLayer.position.x / 50))
+        currentDistanceScore.text = String(distance)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)  {
