@@ -31,10 +31,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var highestDistanceScore: SKLabelNode!
     var currentDistanceScore: SKLabelNode!
     var moneyCounterScore:    SKLabelNode!
-    var counter3:             SKLabelNode!
-    var counter2:             SKLabelNode!
-    var counter1:             SKLabelNode!
-    var counterStart:         SKLabelNode!
     var deathSigh:            SKLabelNode!
     var scrollLayer:    SKNode!
     var obstacleLayer:  SKNode!
@@ -69,10 +65,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         highestDistanceScore = childNode(withName: "//highestDistanceScore") as! SKLabelNode
         currentDistanceScore = childNode(withName: "//currentDistanceScore") as! SKLabelNode
         moneyCounterScore = childNode(withName: "//moneyCounterScoreGS") as! SKLabelNode
-        counter3 = childNode(withName: "counter3") as! SKLabelNode
-        counter2 = childNode(withName: "counter2") as! SKLabelNode
-        counter1 = childNode(withName: "counter1") as! SKLabelNode
-        counterStart = childNode(withName: "counterStart") as! SKLabelNode
         deathSigh = childNode(withName: "//deathSign") as! SKLabelNode
         scrollLayer = self.childNode(withName: "scrollLayer")
         obstacleLayer = self.childNode(withName: "obstacleLayer")
@@ -81,10 +73,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         boat = childNode(withName: "//boat") as! SKSpriteNode
         rock = childNode(withName: "//rock") as! SKSpriteNode
         seaweed = childNode(withName: "//seaweed") as! SKSpriteNode
-        counterStart.isHidden = true
-        counter3.isHidden = true
-        counter2.isHidden = true
-        counter1.isHidden = true
         deathWindow.isHidden = true
         hero.position.x = -236
         scrollSpeed = 80
@@ -115,10 +103,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if contactA.categoryBitMask == 8 || contactB.categoryBitMask == 8 {
             if contactA.categoryBitMask == 8 {
                 nodeA.removeFromParent()
-                money += 1
+                
             } else {
                 nodeB.removeFromParent()
-                money += 1
+                
             }
         }
     }

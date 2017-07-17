@@ -13,8 +13,6 @@
     * [Week 2](#week-2)
     * [Week 3](#week-3)
     * [Week 4](#week-4)
-    * [Week 5](#week-5)
-    * [Week 6](#week-6)
 
 ---
 
@@ -215,19 +213,12 @@ Friday:
 - different kinds of items
 
 #### Week 3
-* [goals for the week]
+* [goals for the week, should be finishing all core gameplay]
 Monday:
 - you loose the last item you've collected
 - particle effect of how much money you earned for particular item, when you collect it
 
 #### Week 4
-* [goals for the week, should be finishing all core gameplay]
-
-#### Week 5
-_starting the polish_
-* [goals for the week]
-
-#### Week 6
 _submitting to the App Store_
 * [goals for the week, should be finishing the polish -- demo day on Saturday!]
 
