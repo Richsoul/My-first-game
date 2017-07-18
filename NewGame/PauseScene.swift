@@ -8,7 +8,7 @@
 
 import SpriteKit
 
-class PauseScene: SKScene, SKPhysicsContactDelegate {
+class DeathScene: SKScene, SKPhysicsContactDelegate {
     
     var highestDistanceScore: SKLabelNode!
     var currentDistanceScore: SKLabelNode!
@@ -22,6 +22,7 @@ class PauseScene: SKScene, SKPhysicsContactDelegate {
         buttonFunc(fileName: "shopButton", direction: "Shop")
         buttonFunc(fileName: "settingsButton", direction: "Settings")
         buttonFunc(fileName: "mainMenuButton", direction: "MainMenu")
+        
         
     }
     

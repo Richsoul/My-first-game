@@ -63,6 +63,7 @@ There will be a long level tamplate, that is repeats infinitefly, however, obsta
 
 ### MVP Milestones
 [The overall milestones of first playable build, core gameplay, and polish are just suggestions, plan to finish earlier if possible. The last 20% of work tends to take about as much time as the first 80% so do not slack off on your milestones!]
+- the furthest distance will be displayed in the beggingin of the game, on the wooden namaplate or elsewhere
 
 #### Week 1
 _planing your game_
@@ -196,12 +197,11 @@ Friday:
 _finishing a playable build_
 * [goals for the week, should be finishing a playable game]
 Monday: 
-- work on score labels()
+- work on score labels(complete)
 - add other objects to updateObstacles func(complete)
-- the furthest distance will be displayed in the beggingin of the game, on the wooden namaplate or elsewhere
 Tuesday:
-- make itemSpawner function 
-- make upgrade feature for shop scene
+- make itemSpawner function(complete) 
+- make upgrade feature for shop scene()
 Wednesday:
 - return to previous page button
 - keep working on itemSpawner(different reactions on every obstacle)
