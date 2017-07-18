@@ -1,5 +1,5 @@
 //
-//  PauseScene.swift
+//  DeathScene.swift
 //  NewGame
 //
 //  Created by Baizhan Zhumagulov on 2017-07-11.
@@ -20,14 +20,13 @@ class DeathScene: SKScene, SKPhysicsContactDelegate {
         physicsWorld.contactDelegate = self
         buttonFunc(fileName: "restartButton", direction: "GameScene")
         buttonFunc(fileName: "shopButton", direction: "Shop")
-        buttonFunc(fileName: "settingsButton", direction: "Settings")
         buttonFunc(fileName: "mainMenuButton", direction: "MainMenu")
         
         
     }
     
     func buttonFunc(fileName: String, direction: String) { //custom button transfer, for any situation я горд собой
-        button = childNode(withName: "\(fileName)") as! MSButtonNode
+        button = childNode(withName: fileName) as! MSButtonNode
         button.selectedHandler = {
             guard let skView = self.view as SKView! else {
                 return
