@@ -70,6 +70,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
         water = childNode(withName: "water") as! SKSpriteNode
@@ -80,7 +81,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         resume = childNode(withName: "//resumeButton") as! MSButtonNode
         highestDistanceScore = childNode(withName: "//highestDistanceScore") as! SKLabelNode
         currentDistanceScore = childNode(withName: "//currentDistanceScore") as! SKLabelNode
-        moneyCounterScore = childNode(withName: "//moneyCounterScoreGS") as! SKLabelNode
+        moneyCounterScore = childNode(withName: "//moneyCounterScore") as! SKLabelNode
         scrollLayer = self.childNode(withName: "scrollLayer")
         boatLayer = self.childNode(withName: "boatLayer")
         obstacleLayer = self.childNode(withName: "obstacleLayer")
@@ -129,25 +130,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         if contactA.categoryBitMask == 8 || contactB.categoryBitMask == 8 {
-            if contactA.categoryBitMask == 8 {
-                if nodeA.name == "item" {
-                    money += 1
-                } else if nodeA.name == "item2" {
-                    money += 2
-                } else if nodeA.name == "item3" {
-                    money += 3
+            if contactA.categoryBitMask == 1 || contactB.categoryBitMask == 1 {
+                if contactA.categoryBitMask == 8 {
+                    if nodeA.name == "item" {
+                        money += 1
+                    } else if nodeA.name == "item2" {
+                        money += 2
+                    } else if nodeA.name == "item3" {
+                        money += 3
+                    }
+                    nodeA.removeFromParent()
+                    
+                } else {
+                    if nodeB.name == "item" {
+                        money += 1
+                    } else if nodeB.name == "item2" {
+                        money += 2
+                    } else if nodeB.name == "item3" {
+                        money += 3
+                    }
+                    nodeB.removeFromParent()
                 }
-                nodeA.removeFromParent()
-               
-            } else {
-                if nodeB.name == "item" {
-                    money += 1
-                } else if nodeB.name == "item2" {
-                    money += 2
-                } else if nodeB.name == "item3" {
-                    money += 3
-                }
-                nodeB.removeFromParent()
             }
         }
         if contactA.categoryBitMask == 2 || contactB.categoryBitMask == 2 {
@@ -250,25 +253,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let newSWPosition = CGPoint(x: 600 + n!, y: 60)
         if netSpawnTimer >= 19 {
             if abs(abs(newNPosition.x) - abs(newIPosition.x)) > 50 && abs(abs(newNPosition.x) - abs(newSWPosition.x)) > 50 {
-            obstacleLayer.addChild(newNet)
-            newNet.position = self.convert(newNPosition, to: obstacleLayer)
-            netSpawnTimer = 0
+                obstacleLayer.addChild(newNet)
+                newNet.position = self.convert(newNPosition, to: obstacleLayer)
+                netSpawnTimer = 0
             }
         }
         if itemSpawnTimer >= 11 {
             if abs(abs(newIPosition.x) - abs(newNPosition.x)) > 50 && abs(abs(newIPosition.x) - abs(newSWPosition.x)) > 50 {
-            obstacleLayer.addChild(newItem)
-            newItem.position = self.convert(newIPosition, to: obstacleLayer)
-            newItem.physicsBody?.applyForce(CGVector(dx: 0, dy: -100))
-            itemSpawnTimer = 0
+                obstacleLayer.addChild(newItem)
+                newItem.position = self.convert(newIPosition, to: obstacleLayer)
+                newItem.physicsBody?.applyForce(CGVector(dx: 0, dy: -100))
+                itemSpawnTimer = 0
             }
         }
         if seaweedSpawnTimer >= 17 {
             if abs(abs(newSWPosition.x) - abs(newNPosition.x)) > 50 && abs(abs(newSWPosition.x) - abs(newIPosition.x)) > 50 {
-            obstacleLayer.addChild(newSeaweed)
-            newSeaweed.position = self.convert(newSWPosition, to: obstacleLayer)
-            newSeaweed.physicsBody?.velocity.dy = CGFloat(-70)
-            seaweedSpawnTimer = 0
+                obstacleLayer.addChild(newSeaweed)
+                newSeaweed.position = self.convert(newSWPosition, to: obstacleLayer)
+                newSeaweed.physicsBody?.velocity.dy = CGFloat(-70)
+                seaweedSpawnTimer = 0
             }
         }
     }
@@ -303,7 +306,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-   func oxygenlvl() {
+    func oxygenlvl() {
         if hero.position.y >= 80 {
             health += CGFloat(x / 60)
         } else {
@@ -385,5 +388,5 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         moneyCounterScore.text = String(money)
         oxygenlvl()
         print(gameState)
-        }
+    }
 }

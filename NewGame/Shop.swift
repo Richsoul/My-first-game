@@ -11,9 +11,14 @@ import SpriteKit
 class Shop: SKScene {
     
     var button: MSButtonNode!
+    var back: MSButtonNode!
+    weak var backScene: SKScene!
     
     override func didMove(to view: SKView) {
-        buttonFunc(fileName: "settingsButton", direction: "Settings")
+        back = childNode(withName: "goBackButton") as! MSButtonNode!
+        back.selectedHandler = {
+            view.presentScene(self.backScene)
+        }
     }
     
     

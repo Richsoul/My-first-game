@@ -14,14 +14,20 @@ class DeathScene: SKScene, SKPhysicsContactDelegate {
     var currentDistanceScore: SKLabelNode!
     var moneyCounterScore:    SKLabelNode!
     var button: MSButtonNode!
+    var shopButton: MSButtonNode!
     
     override func didMove(to view: SKView) {
         
         physicsWorld.contactDelegate = self
         buttonFunc(fileName: "restartButton", direction: "GameScene")
-        buttonFunc(fileName: "shopButton", direction: "Shop")
         buttonFunc(fileName: "mainMenuButton", direction: "MainMenu")
-        
+        shopButton = childNode(withName: "shopButton") as! MSButtonNode
+        shopButton.selectedHandler = {
+            let shop = Shop(fileNamed: "Shop")
+            shop?.backScene = self
+            shop?.scaleMode = .aspectFill
+            view.presentScene(shop)
+        }
         
     }
     

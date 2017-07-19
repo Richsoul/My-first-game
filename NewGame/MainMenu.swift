@@ -10,12 +10,16 @@ import SpriteKit
 
 class MainMenu: SKScene {
     
-    var button: MSButtonNode!
     
-    override func didMove(to view: SKView) {
-        buttonFunc(fileName: "shopButton", direction: "Shop")
-        buttonFunc(fileName: "settingsButton", direction: "Settings")
-        //buttonFunc(fileName: "startArea", direction: "GameScene")
+    var shopButton: MSButtonNode!
+    
+    override func didMove(to view: SKView) {shopButton = childNode(withName: "shopButton") as! MSButtonNode
+        shopButton.selectedHandler = {
+            let shop = Shop(fileNamed: "Shop")
+            shop?.backScene = self
+            shop?.scaleMode = .aspectFill
+            view.presentScene(shop)
+        }
     }
     
      override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -38,20 +42,4 @@ class MainMenu: SKScene {
             }
         }
      }
-    
-    func buttonFunc(fileName: String, direction: String) { //custom button transfer, for any situation я горд собой
-        button = childNode(withName: "\(fileName)") as! MSButtonNode
-        button.selectedHandler = {
-            guard let skView = self.view as SKView! else {
-                return
-            }
-            guard let scene = SKScene(fileNamed:"\(direction)") else {
-                return
-            }
-            scene.scaleMode = .aspectFit
-            skView.presentScene(scene)
-        }
-       
-        
-    }
 }

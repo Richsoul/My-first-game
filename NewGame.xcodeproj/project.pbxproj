@@ -19,10 +19,8 @@
 		0CC87C7E1F1425C800A69973 /* NewGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC87C7D1F1425C800A69973 /* NewGameTests.swift */; };
 		0CC87C891F1425C800A69973 /* NewGameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC87C881F1425C800A69973 /* NewGameUITests.swift */; };
 		0CC87C971F1425E700A69973 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0CC87C961F1425E700A69973 /* MainMenu.sks */; };
-		0CC87C991F1425F600A69973 /* Settings.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0CC87C981F1425F600A69973 /* Settings.sks */; };
 		0CC87C9B1F14261000A69973 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC87C9A1F14261000A69973 /* MSButtonNode.swift */; };
 		0CC87C9D1F14262400A69973 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC87C9C1F14262400A69973 /* MainMenu.swift */; };
-		0CC87C9F1F14263900A69973 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC87C9E1F14263900A69973 /* Settings.swift */; };
 		0CF6BC681F1579F200C4ED67 /* DeathScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF6BC671F1579F200C4ED67 /* DeathScene.swift */; };
 		0CF6BC6A1F157A0000C4ED67 /* DeathScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0CF6BC691F157A0000C4ED67 /* DeathScene.sks */; };
 		0CF6BC6C1F157A1000C4ED67 /* Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF6BC6B1F157A1000C4ED67 /* Shop.swift */; };
@@ -65,10 +63,8 @@
 		0CC87C881F1425C800A69973 /* NewGameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameUITests.swift; sourceTree = "<group>"; };
 		0CC87C8A1F1425C800A69973 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0CC87C961F1425E700A69973 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
-		0CC87C981F1425F600A69973 /* Settings.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Settings.sks; sourceTree = "<group>"; };
 		0CC87C9A1F14261000A69973 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
 		0CC87C9C1F14262400A69973 /* MainMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
-		0CC87C9E1F14263900A69973 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		0CF6BC671F1579F200C4ED67 /* DeathScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeathScene.swift; sourceTree = "<group>"; };
 		0CF6BC691F157A0000C4ED67 /* DeathScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DeathScene.sks; sourceTree = "<group>"; };
 		0CF6BC6B1F157A1000C4ED67 /* Shop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shop.swift; sourceTree = "<group>"; };
@@ -109,6 +105,7 @@
 				0CC87C601F1425C800A69973 /* Products */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 		0CC87C601F1425C800A69973 /* Products */ = {
 			isa = PBXGroup;
@@ -133,8 +130,6 @@
 				0CF6BC6B1F157A1000C4ED67 /* Shop.swift */,
 				0CC87C961F1425E700A69973 /* MainMenu.sks */,
 				0CC87C9C1F14262400A69973 /* MainMenu.swift */,
-				0CC87C981F1425F600A69973 /* Settings.sks */,
-				0CC87C9E1F14263900A69973 /* Settings.swift */,
 				0CC87C6A1F1425C800A69973 /* GameViewController.swift */,
 				0CC87C6C1F1425C800A69973 /* Main.storyboard */,
 				0CC87C9A1F14261000A69973 /* MSButtonNode.swift */,
@@ -277,7 +272,6 @@
 				0CF6BC6E1F157A1D00C4ED67 /* Shop.sks in Resources */,
 				0CC87C971F1425E700A69973 /* MainMenu.sks in Resources */,
 				0CC87C701F1425C800A69973 /* Assets.xcassets in Resources */,
-				0CC87C991F1425F600A69973 /* Settings.sks in Resources */,
 				0CC87C731F1425C800A69973 /* LaunchScreen.storyboard in Resources */,
 				0C17C4441F16B9FB006EBAE9 /* GameScene.sks in Resources */,
 				0CC87C671F1425C800A69973 /* Actions.sks in Resources */,
@@ -306,7 +300,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CF6BC681F1579F200C4ED67 /* DeathScene.swift in Sources */,
-				0CC87C9F1F14263900A69973 /* Settings.swift in Sources */,
 				0CF6BC6C1F157A1000C4ED67 /* Shop.swift in Sources */,
 				0CC87C9D1F14262400A69973 /* MainMenu.swift in Sources */,
 				0CC87C691F1425C800A69973 /* GameScene.swift in Sources */,
