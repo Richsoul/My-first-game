@@ -203,11 +203,11 @@ Tuesday:
 - make itemSpawner function(complete) 
 - make upgrade feature for shop scene()
 Wednesday:
-- return to previous page button
-- keep working on itemSpawner(different reactions on every obstacle)
+- return to previous page button(complete)
+- keep working on itemSpawner(different reactions on every obstacle)(complete)
 Thursday:
 - make hero start swiming from shallow water
-- "delete all results, upgrades" button
+- finish shop upgrades, bounceoff reaction on engine
 Friday:
 - polish everything upolished/undone
 - different kinds of items
