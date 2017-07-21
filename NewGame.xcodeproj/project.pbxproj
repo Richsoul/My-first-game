@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0C17C4441F16B9FB006EBAE9 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0C17C4431F16B9FB006EBAE9 /* GameScene.sks */; };
 		0C17C4461F16BBCA006EBAE9 /* Download CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C17C4451F16BBCA006EBAE9 /* Download CGFloat+Extensions.swift */; };
+		0C9109BC1F229B950066E3F3 /* HeroFeatres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9109BB1F229B950066E3F3 /* HeroFeatres.swift */; };
 		0CC87C631F1425C800A69973 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC87C621F1425C800A69973 /* AppDelegate.swift */; };
 		0CC87C671F1425C800A69973 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0CC87C661F1425C800A69973 /* Actions.sks */; };
 		0CC87C691F1425C800A69973 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC87C681F1425C800A69973 /* GameScene.swift */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		0C17C4431F16B9FB006EBAE9 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		0C17C4451F16BBCA006EBAE9 /* Download CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Download CGFloat+Extensions.swift"; sourceTree = "<group>"; };
+		0C9109BB1F229B950066E3F3 /* HeroFeatres.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroFeatres.swift; sourceTree = "<group>"; };
 		0CC87C5F1F1425C800A69973 /* NewGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CC87C621F1425C800A69973 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0CC87C661F1425C800A69973 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				0C17C4451F16BBCA006EBAE9 /* Download CGFloat+Extensions.swift */,
 				0CC87C6F1F1425C800A69973 /* Assets.xcassets */,
 				0CC87C711F1425C800A69973 /* LaunchScreen.storyboard */,
+				0C9109BB1F229B950066E3F3 /* HeroFeatres.swift */,
 				0CC87C741F1425C800A69973 /* Info.plist */,
 			);
 			path = NewGame;
@@ -307,6 +310,7 @@
 				0CC87C6B1F1425C800A69973 /* GameViewController.swift in Sources */,
 				0CC87C631F1425C800A69973 /* AppDelegate.swift in Sources */,
 				0CC87C9B1F14261000A69973 /* MSButtonNode.swift in Sources */,
+				0C9109BC1F229B950066E3F3 /* HeroFeatres.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

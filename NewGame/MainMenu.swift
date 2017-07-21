@@ -10,16 +10,23 @@ import SpriteKit
 
 class MainMenu: SKScene {
     
-    
+    let sharedData = SharedData.data
     var shopButton: MSButtonNode!
+    var highDistanceScore: SKLabelNode!
+    var moneyCounterScore: SKLabelNode!
     
-    override func didMove(to view: SKView) {shopButton = childNode(withName: "shopButton") as! MSButtonNode
+    override func didMove(to view: SKView) {
+        highDistanceScore = childNode(withName: "highDistanceScore") as! SKLabelNode
+        moneyCounterScore = childNode(withName: "moneyCounterScore") as! SKLabelNode
+        shopButton = childNode(withName: "shopButton") as! MSButtonNode
         shopButton.selectedHandler = {
             let shop = Shop(fileNamed: "Shop")
             shop?.backScene = self
             shop?.scaleMode = .aspectFill
             view.presentScene(shop)
         }
+        highDistanceScore.text = String(sharedData.high)
+        moneyCounterScore.text = String(sharedData.money)
     }
     
      override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

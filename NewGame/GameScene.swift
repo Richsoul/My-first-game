@@ -9,6 +9,28 @@
 import SpriteKit
 import GameplayKit
 
+class SharedData {
+    static let data = SharedData()
+    var high: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: "highScore")
+        }
+        set(high) {
+            UserDefaults.standard.set(high, forKey: "highScore")
+        }
+    }
+    var current = 0
+    var money: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: "money")
+        }
+        set(money) {
+            UserDefaults.standard.set(money, forKey: "money")
+        }
+    }
+}
+
+
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
@@ -18,6 +40,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     enum Obstacle {
         case fishNet, boat, seaweed, none
     }
+    let sData = SharedData.data
     var gameState: GameState = .running
     var obstacleKind: Obstacle = .none
     var water:        SKSpriteNode!
@@ -56,9 +79,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var fishingNet: SKSpriteNode!
     var boat1:       SKSpriteNode!
     var seaweed:    SKSpriteNode!
-    var money : Int = 0
     var oxygen = 100.00
-    var distance = 0
     var x = 0.08
     var y = 0.08
     var health: CGFloat = 1.0 {
@@ -140,23 +161,34 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         if contactA.categoryBitMask == 8 || contactB.categoryBitMask == 8 {
             if contactA.categoryBitMask == 1 || contactB.categoryBitMask == 1 {
+                //let moneyArray = [item, item2, item3]
                 if contactA.categoryBitMask == 8 {
+                    //for n in 0...2 {
+                    //    if nodeA == moneyArray[n] {
+                    //         money.money += n
+                    //    }
+                    //}
                     if nodeA.name == "item" {
-                        money += 1
+                        sData.money += 1
                     } else if nodeA.name == "item2" {
-                        money += 2
+                        sData.money += 2
                     } else if nodeA.name == "item3" {
-                        money += 3
+                        sData.money += 3
                     }
                     nodeA.removeFromParent()
                     
                 } else {
+                    //for n in 0...2 {
+                    //    if nodeB == moneyArray[n] {
+                    //        money.money += n
+                    //    }
+                    //    }
                     if nodeB.name == "item" {
-                        money += 1
+                        sData.money += 1
                     } else if nodeB.name == "item2" {
-                        money += 2
+                        sData.money += 2
                     } else if nodeB.name == "item3" {
-                        money += 3
+                        sData.money += 3
                     }
                     nodeB.removeFromParent()
                 }
@@ -249,25 +281,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let newSWPosition = CGPoint(x: 600 + n!, y: 60)
         if netSpawnTimer >= 20 {
             //if abs(abs(newNPosition.x) - abs(newIPosition.x)) > 50 && abs(abs(newNPosition.x) - abs(newSWPosition.x)) > 50 {
-                obstacleLayer.addChild(newNet)
-                newNet.position = self.convert(newNPosition, to: obstacleLayer)
-                netSpawnTimer = 0
+            obstacleLayer.addChild(newNet)
+            newNet.position = self.convert(newNPosition, to: obstacleLayer)
+            netSpawnTimer = 0
             //}
         }
         if itemSpawnTimer >= 10 {
             //if abs(abs(newIPosition.x) - abs(newNPosition.x)) > 50 && abs(abs(newIPosition.x) - abs(newSWPosition.x)) > 50 {
-                obstacleLayer.addChild(newItem)
-                newItem.position = self.convert(newIPosition, to: obstacleLayer)
-                newItem.physicsBody?.applyForce(CGVector(dx: 0, dy: -100))
-                itemSpawnTimer = 0
+            obstacleLayer.addChild(newItem)
+            newItem.position = self.convert(newIPosition, to: obstacleLayer)
+            newItem.physicsBody?.applyForce(CGVector(dx: 0, dy: -100))
+            itemSpawnTimer = 0
             //}
         }
         if seaweedSpawnTimer >= 15 {
             //if abs(abs(newSWPosition.x) - abs(newNPosition.x)) > 50 && abs(abs(newSWPosition.x) - abs(newIPosition.x)) > 50 {
-                obstacleLayer.addChild(newSeaweed)
-                newSeaweed.position = self.convert(newSWPosition, to: obstacleLayer)
-                newSeaweed.physicsBody?.velocity.dy = CGFloat(-70)
-                seaweedSpawnTimer = 0
+            obstacleLayer.addChild(newSeaweed)
+            newSeaweed.position = self.convert(newSWPosition, to: obstacleLayer)
+            newSeaweed.physicsBody?.velocity.dy = CGFloat(-70)
+            seaweedSpawnTimer = 0
             //}
         }
     }
@@ -338,8 +370,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func updateDistance() {
-        distance = Int(abs(scrollLayer.position.x / 70))
-        currentDistanceScore.text = String(distance)
+        sData.current = Int(abs(scrollLayer.position.x / 70))
+        currentDistanceScore.text = String(sData.current)
+        currentDistanceScore2.text = String(sData.current)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)  {
@@ -376,7 +409,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 hero.physicsBody?.velocity.dy = maxVelocity
             }
         } else {
-         hero.run(float2!)
+            hero.run(float2!)
         }
         if velocityY > minVelocity {
             hero.physicsBody?.velocity.dy = minVelocity
@@ -389,7 +422,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 obstacleNode = nil
             }
         }
-        moneyCounterScore.text = String(money)
+        moneyCounterScore.text = String(sData.money)
         oxygenlvl()
+        if sData.current > sData.high {
+            sData.high = sData.current
+        }
+        highestDistanceScore.text = String(sData.high)
+        highestDistanceScore2.text = String(sData.high)
     }
 }

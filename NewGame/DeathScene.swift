@@ -10,6 +10,7 @@ import SpriteKit
 
 class DeathScene: SKScene, SKPhysicsContactDelegate {
     
+    let sharedData = SharedData.data
     var highestDistanceScore: SKLabelNode!
     var currentDistanceScore: SKLabelNode!
     var moneyCounterScore:    SKLabelNode!
@@ -19,6 +20,9 @@ class DeathScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         
         physicsWorld.contactDelegate = self
+        highestDistanceScore = childNode(withName: "highestDistanceScore") as! SKLabelNode
+        currentDistanceScore = childNode(withName: "currentDistanceScore") as! SKLabelNode
+        moneyCounterScore = childNode(withName: "moneyCounterScore") as! SKLabelNode
         buttonFunc(fileName: "restartButton", direction: "GameScene")
         buttonFunc(fileName: "mainMenuButton", direction: "MainMenu")
         shopButton = childNode(withName: "shopButton") as! MSButtonNode
@@ -28,7 +32,9 @@ class DeathScene: SKScene, SKPhysicsContactDelegate {
             shop?.scaleMode = .aspectFill
             view.presentScene(shop)
         }
-        
+        highestDistanceScore.text = String(sharedData.high)
+        currentDistanceScore.text = String(sharedData.current)
+        moneyCounterScore.text = String(sharedData.money)
     }
     
     func buttonFunc(fileName: String, direction: String) { //custom button transfer, for any situation я горд собой
