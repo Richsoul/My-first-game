@@ -34,7 +34,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var highestDistanceScore: SKLabelNode!
     var currentDistanceScore: SKLabelNode!
     var moneyCounterScore:    SKLabelNode!
+    var highestDistanceScore2: SKLabelNode!
+    var currentDistanceScore2: SKLabelNode!
+    var moneyCounterScore2:    SKLabelNode!
     var scrollLayer:    SKNode!
+    var shallowLayer:   SKNode!
     var boatLayer:      SKNode!
     var obstacleLayer:  SKNode!
     var obstacleSource: SKNode!
@@ -52,7 +56,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var fishingNet: SKSpriteNode!
     var boat1:       SKSpriteNode!
     var seaweed:    SKSpriteNode!
-    var money = 0
+    var money : Int = 0
     var oxygen = 100.00
     var distance = 0
     var x = 0.08
@@ -67,7 +71,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
-    
+    let float2 = SKAction(named: "float")
+    let dive = SKAction(named: "dive")
     
     override func didMove(to view: SKView) {
         physicsWorld.contactDelegate = self
@@ -77,10 +82,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         oxygenLvl = childNode(withName: "oxygenLvl") as! SKSpriteNode
         pauseButton = childNode(withName: "pauseButton") as! MSButtonNode
         resume = childNode(withName: "//resumeButton") as! MSButtonNode
-        highestDistanceScore = childNode(withName: "//highestDistanceScore") as! SKLabelNode
-        currentDistanceScore = childNode(withName: "//currentDistanceScore") as! SKLabelNode
-        moneyCounterScore = childNode(withName: "//moneyCounterScore") as! SKLabelNode
+        highestDistanceScore = childNode(withName: "highestDistanceScore") as! SKLabelNode
+        currentDistanceScore = childNode(withName: "currentDistanceScore") as! SKLabelNode
+        moneyCounterScore = childNode(withName: "moneyCounterScore") as! SKLabelNode
+        highestDistanceScore2 = childNode(withName: "//highestDistanceScore2") as! SKLabelNode
+        currentDistanceScore2 = childNode(withName: "//currentDistanceScore2") as! SKLabelNode
+        moneyCounterScore2 = childNode(withName: "//moneyCounterScore2") as! SKLabelNode
         scrollLayer = self.childNode(withName: "scrollLayer")
+        shallowLayer = self.childNode(withName: "shallowLayer")
         boatLayer = self.childNode(withName: "boatLayer")
         obstacleLayer = self.childNode(withName: "obstacleLayer")
         obstacleSource = self.childNode(withName: "obstacle")
@@ -91,7 +100,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         item2 = childNode(withName: "//item2") as! SKSpriteNode
         item3 = childNode(withName: "//item3") as! SKSpriteNode
         pauseWindow.isHidden = true
-        hero.position.x = -190
+        hero.position.x = -175
         scrollSpeed = 60
         diveForce = -40
         maxVelocity = -70
@@ -187,6 +196,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    func scrollShallow() {
+        shallowLayer.position.x -= scrollSpeed * CGFloat(fixedDelta)
+        for shallowNode in shallowLayer.children as! [SKSpriteNode] {
+            if shallowNode.position.x <= -1000 {
+                shallowNode.removeFromParent()
+            }
+        }
+    }
     
     func updateBoat() {
         boatLayer.position.x -= (scrollSpeed + 100) * CGFloat(fixedDelta)
@@ -270,12 +287,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func float() {
-        if hero.position.x < -190 {
+        if hero.position.x < -175 {
             hero.physicsBody?.applyForce(CGVector(dx: 10, dy:0))
         } else {
-            hero.position.x = -190
+            hero.position.x = -175
         }
-        if hero.position.x == -190 {
+        if hero.position.x == -175 {
             hero.physicsBody?.velocity.dx = 0
         }
         let heroPositionY = hero.position.y
@@ -321,12 +338,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     func updateDistance() {
-        distance = Int(abs(scrollLayer.position.x / 80))
+        distance = Int(abs(scrollLayer.position.x / 70))
         currentDistanceScore.text = String(distance)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)  {
         hero.physicsBody?.applyForce(CGVector(dx:0, dy: diveForce))
+        
         holding = true
     }
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -339,6 +357,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         updateBoat()
         updateDistance()
         scrollWorld()
+        scrollShallow()
         if hero.position.x < -350 {
             playersDeath()
         }
@@ -352,9 +371,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let velocityY = hero.physicsBody?.velocity.dy ?? 0
         if holding == true {
             hero.physicsBody?.applyForce(CGVector(dx: 0, dy: diveForce))
+            hero.run(dive!)
             if velocityY < maxVelocity {
                 hero.physicsBody?.velocity.dy = maxVelocity
             }
+        } else {
+         hero.run(float2!)
         }
         if velocityY > minVelocity {
             hero.physicsBody?.velocity.dy = minVelocity
