@@ -2,4 +2,84 @@
 <Bucket
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NewGame/AppDelegate.swift"
+            timestampString = "523228150.567118"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "12"
+            endingLineNumber = "12"
+            landmarkName = "AppDelegate"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "NewGame.AppDelegate.__deallocating_deinit"
+                  moduleName = "NewGame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/baizhanzhumagulov/Documents/GitHub/My-first-game/NewGame/AppDelegate.swift"
+                  timestampString = "523228150.578816"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "12">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "NewGame.AppDelegate.init () -&gt; NewGame.AppDelegate"
+                  moduleName = "NewGame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/baizhanzhumagulov/Documents/GitHub/My-first-game/NewGame/AppDelegate.swift"
+                  timestampString = "523228150.580538"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "32">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "NewGame.AppDelegate.__allocating_init () -&gt; NewGame.AppDelegate"
+                  moduleName = "NewGame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/baizhanzhumagulov/Documents/GitHub/My-first-game/NewGame/AppDelegate.swift"
+                  timestampString = "523228150.58208"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "12">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "main"
+                  moduleName = "NewGame"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/baizhanzhumagulov/Documents/GitHub/My-first-game/NewGame/AppDelegate.swift"
+                  timestampString = "523228150.583561"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "12"
+                  endingLineNumber = "12"
+                  offsetFromSymbolStart = "12">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

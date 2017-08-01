@@ -28,8 +28,32 @@ class SharedData {
             UserDefaults.standard.set(money, forKey: "money")
         }
     }
+    var boost: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: "boost")
+        }
+        set(boost) {
+            UserDefaults.standard.set(money, forKey: "boost")
+        }
+    }
+    var ivul: Int {
+        get {
+            return UserDefaults.standard.integer(forKey: "ivul")
+        }
+        set(ivul) {
+            UserDefaults.standard.set(money, forKey: "ivul")
+        }
+    }
 }
-
+extension SKNode {
+    var positionInScene:CGPoint? {
+        if let scene = scene, let parent = parent {
+            return parent.convert(position, to:scene)
+        } else {
+            return nil
+        }
+    }
+}
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
@@ -80,7 +104,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var boat1:       SKSpriteNode!
     var seaweed:    SKSpriteNode!
     var oxygen = 100.00
-    var x = 0.08
+    var x = 0.24
     var y = 0.08
     var health: CGFloat = 1.0 {
         didSet {
@@ -139,6 +163,37 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         buttonFunc(fileName: "//mainMenuButton", direction: "MainMenu")
         
     }
+    
+    func particleEffect(node:SKSpriteNode) {
+        let particles1 = SKEmitterNode(fileNamed: "emitter1")!
+        let particles2 = SKEmitterNode(fileNamed: "emitter2")!
+        let particles3 = SKEmitterNode(fileNamed: "emitter3")!
+        let wait = SKAction.wait(forDuration: 3)
+        let removeParticles = SKAction.removeFromParent()
+        let seq = SKAction.sequence([wait, removeParticles])
+        let positionInScene  = node.positionInScene
+        switch node.name{
+        case "item"?:
+            addChild(particles1)
+            particles1.position = positionInScene!
+            particles1.run(seq)
+            sData.money += 1
+        case "item2"?:
+            addChild(particles2)
+            particles2.position = positionInScene!
+            particles2.run(seq)
+            sData.money += 2
+        case "item3"?:
+            addChild(particles3)
+            particles3.position = positionInScene!
+            particles3.run(seq)
+            sData.money += 3
+        default:
+            break
+        }
+        node.removeFromParent()
+    }
+    
     func didBegin(_ contact: SKPhysicsContact) {
         let contactA:SKPhysicsBody = contact.bodyA
         let contactB:SKPhysicsBody = contact.bodyB
@@ -161,36 +216,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         if contactA.categoryBitMask == 8 || contactB.categoryBitMask == 8 {
             if contactA.categoryBitMask == 1 || contactB.categoryBitMask == 1 {
-                //let moneyArray = [item, item2, item3]
                 if contactA.categoryBitMask == 8 {
-                    //for n in 0...2 {
-                    //    if nodeA == moneyArray[n] {
-                    //         money.money += n
-                    //    }
-                    //}
-                    if nodeA.name == "item" {
-                        sData.money += 1
-                    } else if nodeA.name == "item2" {
-                        sData.money += 2
-                    } else if nodeA.name == "item3" {
-                        sData.money += 3
-                    }
-                    nodeA.removeFromParent()
-                    
+                    particleEffect(node: nodeA)
                 } else {
-                    //for n in 0...2 {
-                    //    if nodeB == moneyArray[n] {
-                    //        money.money += n
-                    //    }
-                    //    }
-                    if nodeB.name == "item" {
-                        sData.money += 1
-                    } else if nodeB.name == "item2" {
-                        sData.money += 2
-                    } else if nodeB.name == "item3" {
-                        sData.money += 3
-                    }
-                    nodeB.removeFromParent()
+                    particleEffect(node: nodeB)
                 }
             }
         }
@@ -206,7 +235,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         if contactA.categoryBitMask == 64 || contactB.categoryBitMask == 64 {
             hero.physicsBody?.applyImpulse(CGVector(dx:0, dy: -13))
-            health -= 0.025
+            health -= 0.05
         }
     }
     
@@ -280,27 +309,21 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let newSeaweed = seaweed.copy() as! SKSpriteNode
         let newSWPosition = CGPoint(x: 600 + n!, y: 60)
         if netSpawnTimer >= 20 {
-            //if abs(abs(newNPosition.x) - abs(newIPosition.x)) > 50 && abs(abs(newNPosition.x) - abs(newSWPosition.x)) > 50 {
             obstacleLayer.addChild(newNet)
             newNet.position = self.convert(newNPosition, to: obstacleLayer)
             netSpawnTimer = 0
-            //}
         }
         if itemSpawnTimer >= 10 {
-            //if abs(abs(newIPosition.x) - abs(newNPosition.x)) > 50 && abs(abs(newIPosition.x) - abs(newSWPosition.x)) > 50 {
             obstacleLayer.addChild(newItem)
             newItem.position = self.convert(newIPosition, to: obstacleLayer)
             newItem.physicsBody?.applyForce(CGVector(dx: 0, dy: -100))
             itemSpawnTimer = 0
-            //}
         }
         if seaweedSpawnTimer >= 15 {
-            //if abs(abs(newSWPosition.x) - abs(newNPosition.x)) > 50 && abs(abs(newSWPosition.x) - abs(newIPosition.x)) > 50 {
             obstacleLayer.addChild(newSeaweed)
             newSeaweed.position = self.convert(newSWPosition, to: obstacleLayer)
             newSeaweed.physicsBody?.velocity.dy = CGFloat(-70)
             seaweedSpawnTimer = 0
-            //}
         }
     }
     
@@ -321,6 +344,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func float() {
         if hero.position.x < -175 {
             hero.physicsBody?.applyForce(CGVector(dx: 10, dy:0))
+            if (hero.physicsBody?.velocity.dx)! > CGFloat(13) {
+                hero.physicsBody?.velocity.dx = 13
+                
+            }
+            
         } else {
             hero.position.x = -175
         }
@@ -423,6 +451,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         moneyCounterScore.text = String(sData.money)
+        moneyCounterScore2.text = String(sData.money)
         oxygenlvl()
         if sData.current > sData.high {
             sData.high = sData.current

@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C17C4441F16B9FB006EBAE9 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0C17C4431F16B9FB006EBAE9 /* GameScene.sks */; };
 		0C17C4461F16BBCA006EBAE9 /* Download CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C17C4451F16BBCA006EBAE9 /* Download CGFloat+Extensions.swift */; };
+		0C30DDD61F2F99B20042C598 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0C30DDD51F2F99B20042C598 /* GameScene.sks */; };
 		0C9109BC1F229B950066E3F3 /* HeroFeatres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9109BB1F229B950066E3F3 /* HeroFeatres.swift */; };
 		0CC87C631F1425C800A69973 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC87C621F1425C800A69973 /* AppDelegate.swift */; };
 		0CC87C671F1425C800A69973 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0CC87C661F1425C800A69973 /* Actions.sks */; };
@@ -22,6 +22,9 @@
 		0CC87C971F1425E700A69973 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0CC87C961F1425E700A69973 /* MainMenu.sks */; };
 		0CC87C9B1F14261000A69973 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC87C9A1F14261000A69973 /* MSButtonNode.swift */; };
 		0CC87C9D1F14262400A69973 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC87C9C1F14262400A69973 /* MainMenu.swift */; };
+		0CE7CD9B1F2FAE740002AB07 /* emitter2.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0CE7CD9A1F2FAE740002AB07 /* emitter2.sks */; };
+		0CE7CD9D1F2FB0220002AB07 /* emitter1.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0CE7CD9C1F2FB0220002AB07 /* emitter1.sks */; };
+		0CE7CD9F1F2FB07B0002AB07 /* emitter3.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0CE7CD9E1F2FB07B0002AB07 /* emitter3.sks */; };
 		0CF6BC681F1579F200C4ED67 /* DeathScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF6BC671F1579F200C4ED67 /* DeathScene.swift */; };
 		0CF6BC6A1F157A0000C4ED67 /* DeathScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0CF6BC691F157A0000C4ED67 /* DeathScene.sks */; };
 		0CF6BC6C1F157A1000C4ED67 /* Shop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF6BC6B1F157A1000C4ED67 /* Shop.swift */; };
@@ -46,8 +49,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0C17C4431F16B9FB006EBAE9 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		0C17C4451F16BBCA006EBAE9 /* Download CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Download CGFloat+Extensions.swift"; sourceTree = "<group>"; };
+		0C30DDD51F2F99B20042C598 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		0C9109BB1F229B950066E3F3 /* HeroFeatres.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroFeatres.swift; sourceTree = "<group>"; };
 		0CC87C5F1F1425C800A69973 /* NewGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CC87C621F1425C800A69973 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +70,9 @@
 		0CC87C961F1425E700A69973 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
 		0CC87C9A1F14261000A69973 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
 		0CC87C9C1F14262400A69973 /* MainMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
+		0CE7CD9A1F2FAE740002AB07 /* emitter2.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = emitter2.sks; sourceTree = "<group>"; };
+		0CE7CD9C1F2FB0220002AB07 /* emitter1.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = emitter1.sks; sourceTree = "<group>"; };
+		0CE7CD9E1F2FB07B0002AB07 /* emitter3.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = emitter3.sks; sourceTree = "<group>"; };
 		0CF6BC671F1579F200C4ED67 /* DeathScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeathScene.swift; sourceTree = "<group>"; };
 		0CF6BC691F157A0000C4ED67 /* DeathScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DeathScene.sks; sourceTree = "<group>"; };
 		0CF6BC6B1F157A1000C4ED67 /* Shop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Shop.swift; sourceTree = "<group>"; };
@@ -124,7 +130,10 @@
 			children = (
 				0CC87C621F1425C800A69973 /* AppDelegate.swift */,
 				0CC87C661F1425C800A69973 /* Actions.sks */,
-				0C17C4431F16B9FB006EBAE9 /* GameScene.sks */,
+				0CE7CD9C1F2FB0220002AB07 /* emitter1.sks */,
+				0CE7CD9A1F2FAE740002AB07 /* emitter2.sks */,
+				0CE7CD9E1F2FB07B0002AB07 /* emitter3.sks */,
+				0C30DDD51F2F99B20042C598 /* GameScene.sks */,
 				0CC87C681F1425C800A69973 /* GameScene.swift */,
 				0CF6BC691F157A0000C4ED67 /* DeathScene.sks */,
 				0CF6BC671F1579F200C4ED67 /* DeathScene.swift */,
@@ -271,13 +280,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				0CC87C6E1F1425C800A69973 /* Main.storyboard in Resources */,
+				0CE7CD9B1F2FAE740002AB07 /* emitter2.sks in Resources */,
 				0CF6BC6A1F157A0000C4ED67 /* DeathScene.sks in Resources */,
 				0CF6BC6E1F157A1D00C4ED67 /* Shop.sks in Resources */,
 				0CC87C971F1425E700A69973 /* MainMenu.sks in Resources */,
+				0C30DDD61F2F99B20042C598 /* GameScene.sks in Resources */,
 				0CC87C701F1425C800A69973 /* Assets.xcassets in Resources */,
+				0CE7CD9F1F2FB07B0002AB07 /* emitter3.sks in Resources */,
 				0CC87C731F1425C800A69973 /* LaunchScreen.storyboard in Resources */,
-				0C17C4441F16B9FB006EBAE9 /* GameScene.sks in Resources */,
 				0CC87C671F1425C800A69973 /* Actions.sks in Resources */,
+				0CE7CD9D1F2FB0220002AB07 /* emitter1.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

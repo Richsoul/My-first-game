@@ -216,8 +216,16 @@ Friday:
 #### Week 3
 * [goals for the week, should be finishing all core gameplay]
 Monday:
-- you loose the last item you've collected
-- particle effect of how much money you earned for particular item, when you collect it
+- particle effect of how much money you earned for particular item, when you collect it(complete)
+- add fishing hook, description given in notes app
+Tuesday: 
+- every 1/4 ground paterns there will be a cave lvl
+- every 50m game speed increases
+Wednesday:
+- add shop firebase
+- shop power ups: fill the oxuygen lvl to max, ivulnerable to all the stuns and roots for 5 sec.,
+Thursday:
+Friday:
 
 #### Week 4
 _submitting to the App Store_
