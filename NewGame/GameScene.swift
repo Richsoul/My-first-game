@@ -95,17 +95,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var boatSpawnTimer:    CFTimeInterval = 14
     var itemSpawnTimer:    CFTimeInterval = 6
     var seaweedSpawnTimer: CFTimeInterval = 10
+    var timer:             CFTimeInterval = 0
     var holding: Bool = false
     var diveForce = 0
-    var scrollSpeed: CGFloat = 0
-    var maxVelocity: CGFloat = 0
-    var minVelocity: CGFloat = 0
+    var scrollSpeed: CGFloat!
+    var x: CGFloat = 75
+    var maxVelocity: CGFloat!
+    let y = -40
+    var minVelocity: CGFloat!
+    let z: CGFloat = -70
     var fishingNet: SKSpriteNode!
     var boat1:       SKSpriteNode!
     var seaweed:    SKSpriteNode!
     var oxygen = 100.00
-    var x = 0.24
-    var y = 0.08
     var health: CGFloat = 1.0 {
         didSet {
             oxygenLvl.xScale = health
@@ -116,6 +118,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }
+    var timer2: CFTimeInterval = 14.97
     let float2 = SKAction(named: "float")
     let dive = SKAction(named: "dive")
     
@@ -146,16 +149,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         item3 = childNode(withName: "//item3") as! SKSpriteNode
         pauseWindow.isHidden = true
         hero.position.x = -175
-        scrollSpeed = 60
-        diveForce = -40
-        maxVelocity = -70
+        scrollSpeed = x
+        diveForce = y
+        maxVelocity = z
+        minVelocity = -z
         scene?.physicsWorld.gravity = CGVector(dx: 0, dy: 1.5)
         pause = childNode(withName: "//pauseButton") as! MSButtonNode
-        pause.selectedHandler = {
+        pause.selectedHandler = {[unowned self] in
             self.pauseWindow.isHidden = false
             self.isPaused = true
         }
-        resume.selectedHandler = {
+        resume.selectedHandler = {[unowned self] in
             self.pauseWindow.isHidden = true
             self.isPaused = false
         }
@@ -248,13 +252,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func scrollWorld() {
         scrollLayer.position.x -= scrollSpeed * CGFloat(fixedDelta)
-        for ground in scrollLayer.children as! [SKSpriteNode] {
-            
-            let groundPosition = scrollLayer.convert(ground.position, to: self)
-            if groundPosition.x <= -ground.size.width / 2 - 510{
-                let newPosition = CGPoint(x: (self.size.width / 2) + ground.size.width, y: groundPosition.y)
-                ground.position = self.convert(newPosition, to: scrollLayer)
-            }
+            for ground in scrollLayer.children as! [SKSpriteNode] {
+                let groundPosition = scrollLayer.convert(ground.position, to: self)
+                if groundPosition.x <= -ground.size.width / 2 - 510{
+                    let newPosition = CGPoint(x: (self.size.width / 2) + ground.size.width, y: groundPosition.y)
+                    ground.position = self.convert(newPosition, to: scrollLayer)
+                }
         }
     }
     func scrollShallow() {
@@ -329,7 +332,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func buttonFunc(fileName: String, direction: String) {
         button = childNode(withName: "\(fileName)") as! MSButtonNode
-        button.selectedHandler = {
+        button.selectedHandler = {[unowned self] in 
             guard let skView = self.view as SKView! else {
                 return
             }
@@ -370,31 +373,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func oxygenlvl() {
         if hero.position.y >= 80 {
-            health += CGFloat(x / 60)
+            health += CGFloat(0.24 / 60)
         } else {
-            health -= CGFloat(y / 60)
+            health -= CGFloat(0.08 / 60)
         }
     }
     
     func root(){
         switch obstacleKind{
         case .seaweed:
-            scrollSpeed = 20
-            diveForce = -40/3
-            maxVelocity = -70/3
+            scrollSpeed = x/3
+            diveForce = y/3
+            maxVelocity = z/3
             scene?.physicsWorld.gravity = CGVector(dx: 0, dy: 1.5/5)
-            minVelocity = 70/3
+            minVelocity = -z/3
             break
         case .fishNet:
             scene?.physicsWorld.gravity = CGVector(dx: 0, dy: -1.3)
             minVelocity = 0
             break
         default:
-            scrollSpeed = 60
-            diveForce = -40
-            maxVelocity = -70
+            scrollSpeed = x
+            diveForce = y
+            maxVelocity = z
             scene?.physicsWorld.gravity = CGVector(dx: 0, dy: 1.5)
-            minVelocity = 70
+            minVelocity = -z
         }
     }
     func updateDistance() {
@@ -419,15 +422,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         updateDistance()
         scrollWorld()
         scrollShallow()
+        timer += fixedDelta
+        if timer - timer2 >= 1 && Int(timer.truncatingRemainder(dividingBy: 15)) == 0{
+            print(timer, timer2)
+                x += 2.5
+                print(x)
+            timer2 += 15
+        }
         if hero.position.x < -350 {
             playersDeath()
         }
         if gameState == .dead {
             playersDeath()
         }
-        netSpawnTimer += fixedDelta
+        netSpawnTimer += fixedDelta * CFTimeInterval(x/60)
         boatSpawnTimer += fixedDelta
-        itemSpawnTimer += fixedDelta
+        itemSpawnTimer += fixedDelta * CFTimeInterval(x/60)
         seaweedSpawnTimer += fixedDelta
         let velocityY = hero.physicsBody?.velocity.dy ?? 0
         if holding == true {

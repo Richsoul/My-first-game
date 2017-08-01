@@ -19,7 +19,7 @@ class MainMenu: SKScene {
         highDistanceScore = childNode(withName: "highDistanceScore") as! SKLabelNode
         moneyCounterScore = childNode(withName: "moneyCounterScore") as! SKLabelNode
         shopButton = childNode(withName: "shopButton") as! MSButtonNode
-        shopButton.selectedHandler = {
+        shopButton.selectedHandler = {[unowned self] in
             let shop = Shop(fileNamed: "Shop")
             shop?.backScene = self
             shop?.scaleMode = .aspectFill

@@ -26,7 +26,7 @@ class DeathScene: SKScene, SKPhysicsContactDelegate {
         buttonFunc(fileName: "restartButton", direction: "GameScene")
         buttonFunc(fileName: "mainMenuButton", direction: "MainMenu")
         shopButton = childNode(withName: "shopButton") as! MSButtonNode
-        shopButton.selectedHandler = {
+        shopButton.selectedHandler = {[unowned self] in
             let shop = Shop(fileNamed: "Shop")
             shop?.backScene = self
             shop?.scaleMode = .aspectFill
@@ -37,9 +37,9 @@ class DeathScene: SKScene, SKPhysicsContactDelegate {
         moneyCounterScore.text = String(sharedData.money)
     }
     
-    func buttonFunc(fileName: String, direction: String) { //custom button transfer, for any situation я горд собой
+    func buttonFunc(fileName: String, direction: String) { //custom button transfer, for any situation
         button = childNode(withName: fileName) as! MSButtonNode
-        button.selectedHandler = {
+        button.selectedHandler = {[unowned self] in
             guard let skView = self.view as SKView! else {
                 return
             }

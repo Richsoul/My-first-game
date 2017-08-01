@@ -16,7 +16,7 @@ class Shop: SKScene {
     
     override func didMove(to view: SKView) {
         back = childNode(withName: "goBackButton") as! MSButtonNode!
-        back.selectedHandler = {
+        back.selectedHandler = {[unowned self] in
             view.presentScene(self.backScene)
         }
     }
@@ -24,7 +24,7 @@ class Shop: SKScene {
     
     func buttonFunc(fileName: String, direction: String) { //custom button transfer, for any situation
         button = childNode(withName: "\(fileName)") as! MSButtonNode
-        button.selectedHandler = {
+        button.selectedHandler = {[unowned self] in
             guard let skView = self.view as SKView! else {
                 return
             }
