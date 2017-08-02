@@ -211,7 +211,7 @@ Thursday:
 - bounceoff reaction on engine(almost)5 hours
 Friday:
 - polish everything upolished/undone
-- the same score labels in different scenes should indicate the same score
+- the same score labels in different scenes should indicate the same score(complete)
 
 #### Week 3
 * [goals for the week, should be finishing all core gameplay]
@@ -223,7 +223,7 @@ Tuesday:
 - every 50m game speed increases
 Wednesday:
 - add shop firebase
-- shop power ups: fill the oxuygen lvl to max, ivulnerable to all the stuns and roots for 5 sec.,
+- shop power ups: fill the oxygen lvl to max, ivulnerable to all the stuns and roots for 5 sec.,
 Thursday:
 Friday:
 

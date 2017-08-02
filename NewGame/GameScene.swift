@@ -64,9 +64,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     enum Obstacle {
         case fishNet, boat, seaweed, none
     }
+    enum Hook {
+        case connect, noconnect
+    }
     let sData = SharedData.data
     var gameState: GameState = .running
     var obstacleKind: Obstacle = .none
+    var hookState: Hook = .noconnect
     var water:        SKSpriteNode!
     var hero:         SKSpriteNode!
     var pauseWindow:  SKSpriteNode!
@@ -78,7 +82,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var button:        MSButtonNode!
     var pause:         MSButtonNode!
     var resume:        MSButtonNode!
-    var highestDistanceScore: SKLabelNode!
     var currentDistanceScore: SKLabelNode!
     var moneyCounterScore:    SKLabelNode!
     var highestDistanceScore2: SKLabelNode!
@@ -89,7 +92,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var boatLayer:      SKNode!
     var obstacleLayer:  SKNode!
     var obstacleSource: SKNode!
-    var obstacleNode:   SKNode?
+    var obstacleNode:   SKNode!
+    var fisherBoat:     SKNode!
     var fixedDelta:        CFTimeInterval = 1.0 / 60.0
     var netSpawnTimer:     CFTimeInterval = 4
     var boatSpawnTimer:    CFTimeInterval = 14
@@ -98,6 +102,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var timer:             CFTimeInterval = 0
     var holding: Bool = false
     var diveForce = 0
+    var fishBoatSpeed: CGFloat!
     var scrollSpeed: CGFloat!
     var x: CGFloat = 75
     var maxVelocity: CGFloat!
@@ -105,8 +110,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var minVelocity: CGFloat!
     let z: CGFloat = -70
     var fishingNet: SKSpriteNode!
-    var boat1:       SKSpriteNode!
+    var boat1:      SKSpriteNode!
     var seaweed:    SKSpriteNode!
+    var fisher:     SKSpriteNode!
     var oxygen = 100.00
     var health: CGFloat = 1.0 {
         didSet {
@@ -130,7 +136,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         oxygenLvl = childNode(withName: "oxygenLvl") as! SKSpriteNode
         pauseButton = childNode(withName: "pauseButton") as! MSButtonNode
         resume = childNode(withName: "//resumeButton") as! MSButtonNode
-        highestDistanceScore = childNode(withName: "highestDistanceScore") as! SKLabelNode
         currentDistanceScore = childNode(withName: "currentDistanceScore") as! SKLabelNode
         moneyCounterScore = childNode(withName: "moneyCounterScore") as! SKLabelNode
         highestDistanceScore2 = childNode(withName: "//highestDistanceScore2") as! SKLabelNode
@@ -141,15 +146,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         boatLayer = self.childNode(withName: "boatLayer")
         obstacleLayer = self.childNode(withName: "obstacleLayer")
         obstacleSource = self.childNode(withName: "obstacle")
+        fisherBoat = self.childNode(withName: "fisherBoat")
         fishingNet = childNode(withName: "//fishingNet") as! SKSpriteNode
         boat1 = childNode(withName: "//boat") as! SKSpriteNode
         seaweed = childNode(withName: "//seaweed") as! SKSpriteNode
+        fisher = childNode(withName: "//origin") as! SKSpriteNode
         item = childNode(withName: "//item") as! SKSpriteNode
         item2 = childNode(withName: "//item2") as! SKSpriteNode
         item3 = childNode(withName: "//item3") as! SKSpriteNode
         pauseWindow.isHidden = true
         hero.position.x = -175
         scrollSpeed = x
+        fishBoatSpeed = x
         diveForce = y
         maxVelocity = z
         minVelocity = -z
@@ -203,43 +211,81 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let contactB:SKPhysicsBody = contact.bodyB
         let nodeA = contactA.node as! SKSpriteNode
         let nodeB = contactB.node as! SKSpriteNode
-        if contactA.categoryBitMask == 16 || contactB.categoryBitMask == 16 {
-            obstacleKind = .seaweed
-            if contactA.categoryBitMask == 16 {
-                obstacleNode = nodeA
-            } else {
-                obstacleNode = nodeB
+        
+        var hero: SKSpriteNode!
+        if contactA.categoryBitMask == 1 {
+            hero = nodeA
+        } else if contactB.categoryBitMask == 1 {
+            hero = nodeB
+        }
+        var seaweed: SKSpriteNode!
+        if contactA.categoryBitMask == 16 {
+            seaweed = nodeA
+        } else if contactB.categoryBitMask == 16 {
+            seaweed = nodeB
+        }
+        var item: SKSpriteNode!
+        if contactA.categoryBitMask == 8 {
+            item = nodeA
+        } else if contactB.categoryBitMask == 8 {
+            item = nodeB
+        }
+        var ground: SKSpriteNode!
+        if contactA.categoryBitMask == 32 {
+            ground = nodeA
+        } else if contactB.categoryBitMask == 32 {
+            ground = nodeB
+        }
+        var fishNet: SKSpriteNode!
+        if contactA.categoryBitMask == 2 {
+            fishNet = nodeA
+        } else if contactB.categoryBitMask == 2 {
+            fishNet = nodeB
+        }
+        var boat: SKSpriteNode!
+        if contactA.categoryBitMask == 64 {
+            boat = nodeA
+        } else if contactA.categoryBitMask == 64 {
+            boat = nodeB
+        }
+        var hook: SKSpriteNode!
+        if contactA.categoryBitMask == 128 {
+            hook = nodeA
+        } else if contactB.categoryBitMask == 128 {
+            hook = nodeB
+        }
+        
+        
+        
+        if let seaweed = seaweed {
+            if hero != nil {
+                obstacleKind = .seaweed
             }
-            if contactA.categoryBitMask == 32 || contactB.categoryBitMask == 32 {
-                if contactA.categoryBitMask == 16 {
-                    nodeA.physicsBody?.isDynamic = false
-                } else if contactB.categoryBitMask == 16 {
-                    nodeB.physicsBody?.isDynamic = false
-                }
+            if ground != nil {
+                seaweed.physicsBody?.isDynamic = false
             }
         }
-        if contactA.categoryBitMask == 8 || contactB.categoryBitMask == 8 {
-            if contactA.categoryBitMask == 1 || contactB.categoryBitMask == 1 {
-                if contactA.categoryBitMask == 8 {
-                    particleEffect(node: nodeA)
-                } else {
-                    particleEffect(node: nodeB)
-                }
+        if let hero = hero {
+            if let item = item {
+                particleEffect(node: item)
             }
-        }
-        if contactA.categoryBitMask == 2 || contactB.categoryBitMask == 2 {
-            obstacleKind = .fishNet
-            if contactA.categoryBitMask == 2 {
-                obstacleNode = nodeA
-                nodeA.isHidden = true
-            } else {
-                obstacleNode = nodeB
-                nodeB.isHidden = true
+            if let fishNet = fishNet {
+                obstacleKind = .fishNet
+                obstacleNode = fishNet
+                fishNet.isHidden = true
             }
-        }
-        if contactA.categoryBitMask == 64 || contactB.categoryBitMask == 64 {
-            hero.physicsBody?.applyImpulse(CGVector(dx:0, dy: -13))
-            health -= 0.05
+            if boat != nil {
+                hero.physicsBody?.applyImpulse(CGVector(dx:0, dy: -13))
+                health -= 0.05
+            }
+            if let hook = hook {
+                hookState = .connect
+                hero.move(toParent: hook)
+                hero.physicsBody?.affectedByGravity = false
+                fishBoatSpeed = 25
+                hook.position.y = hero.position.y + CGFloat(305)
+                hero.physicsBody?.applyForce(CGVector(dx: 0,dy: 20))
+            }
         }
     }
     
@@ -330,6 +376,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func fisherBoatFunc() {
+        fisherBoat.position.x -= fishBoatSpeed * CGFloat(fixedDelta)
+        
+        for fishingRod in fisherBoat.children as! [SKSpriteNode] {
+            
+            let obstaclePosition = obstacleLayer.convert(fishingRod.position, to: self)
+            if obstaclePosition.x <= -320 {
+                fishingRod.removeFromParent()
+            }
+            
+        }
+        let randomArray: [CGFloat?] = [-100, -50, 0, 50, 100]
+        let n = randomArray[Int(arc4random_uniform(4))]
+        let newHook = fisher.copy() as! SKSpriteNode
+        let newHPosition = CGPoint(x: 600 + n!, y: 305)
+        if boatSpawnTimer > 14.01 && boatSpawnTimer < 14.03 {
+            obstacleLayer.addChild(newHook)
+            newHook.position = self.convert(newHPosition, to: obstacleLayer)
+            newHook.physicsBody?.velocity.dy = CGFloat(-70)
+        }
+    }
+    
     func buttonFunc(fileName: String, direction: String) {
         button = childNode(withName: "\(fileName)") as! MSButtonNode
         button.selectedHandler = {[unowned self] in 
@@ -416,12 +484,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
-        float()
+        if hero.parent == self {
+            float()
+        }
         updateObstacles()
         updateBoat()
         updateDistance()
         scrollWorld()
         scrollShallow()
+        fisherBoatFunc()
         timer += fixedDelta
         if timer - timer2 >= 1 && Int(timer.truncatingRemainder(dividingBy: 15)) == 0{
             print(timer, timer2)
@@ -466,7 +537,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if sData.current > sData.high {
             sData.high = sData.current
         }
-        highestDistanceScore.text = String(sData.high)
         highestDistanceScore2.text = String(sData.high)
     }
 }
