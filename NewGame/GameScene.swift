@@ -280,11 +280,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             if let hook = hook {
                 hookState = .connect
-                hero.move(toParent: hook)
-                hero.physicsBody?.affectedByGravity = false
-                fishBoatSpeed = 25
-                hook.position.y = hero.position.y + CGFloat(305)
-                hero.physicsBody?.applyForce(CGVector(dx: 0,dy: 20))
             }
         }
     }
@@ -295,7 +290,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             view?.presentScene(scene)
         }
     }
-    
+    func joinPhysicsBodies(bodyA:SKPhysicsBody, bodyB:SKPhysicsBody, point:CGPoint) {
+    }
     func scrollWorld() {
         scrollLayer.position.x -= scrollSpeed * CGFloat(fixedDelta)
             for ground in scrollLayer.children as! [SKSpriteNode] {
@@ -382,6 +378,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for fishingRod in fisherBoat.children as! [SKSpriteNode] {
             
             let obstaclePosition = obstacleLayer.convert(fishingRod.position, to: self)
+            if hookState == .connect {
+                fishingRod.physicsBody?.applyForce(CGVector(dx: 0, dy: 20))
+            }
             if obstaclePosition.x <= -320 {
                 fishingRod.removeFromParent()
             }
@@ -523,7 +522,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if velocityY > minVelocity {
             hero.physicsBody?.velocity.dy = minVelocity
         }
-        
+        if hookState == .connect {
+            if hero.position.y < -10 {
+                hookState = .noconnect
+                
+            }
+        }
         root()
         if let obstacle = obstacleNode {
             if !obstacle.intersects(hero) {
