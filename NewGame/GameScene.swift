@@ -280,6 +280,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             if let hook = hook {
                 hookState = .connect
+                hero.move(toParent: hook)
             }
         }
     }
@@ -523,9 +524,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             hero.physicsBody?.velocity.dy = minVelocity
         }
         if hookState == .connect {
-            if hero.position.y < -10 {
+            if hero.parent!.convert(hero.position, to: self).y < -10 {
                 hookState = .noconnect
-                
+                hero.move(toParent: self)
             }
         }
         root()
