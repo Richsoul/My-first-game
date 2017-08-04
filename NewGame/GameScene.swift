@@ -26,6 +26,14 @@ class SharedData {
         }
         set(money) {
             UserDefaults.standard.set(money, forKey: "money")
+            if User.loggedIn {
+                UserService.setCoins(User.current, coins: money)
+                UserService.show(forUID: User.current.uid) { user in
+                    if let user = user {
+                        User.setCurrent(user, writeToUserDefaults: true)
+                    }
+                }
+            }
         }
     }
     var boost: Int {
@@ -78,6 +86,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var item2:        SKSpriteNode!
     var item3:        SKSpriteNode!
     var oxygenLvl:    SKSpriteNode!
+    var cave:         SKSpriteNode!
     var pauseButton:   MSButtonNode!
     var button:        MSButtonNode!
     var pause:         MSButtonNode!
@@ -260,6 +269,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if let seaweed = seaweed {
             if hero != nil {
                 obstacleKind = .seaweed
+                obstacleNode = seaweed
             }
             if ground != nil {
                 seaweed.physicsBody?.isDynamic = false
@@ -298,7 +308,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             for ground in scrollLayer.children as! [SKSpriteNode] {
                 let groundPosition = scrollLayer.convert(ground.position, to: self)
                 if groundPosition.x <= -ground.size.width / 2 - 510{
-                    let newPosition = CGPoint(x: (self.size.width / 2) + ground.size.width, y: groundPosition.y)
+                    let newPosition = CGPoint(x: (self.size.width / 2) + 3 * ground.size.width, y: groundPosition.y)
                     ground.position = self.convert(newPosition, to: scrollLayer)
                 }
         }
@@ -354,22 +364,28 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let newIPosition = CGPoint(x: 600 + n!, y: 60)
         let newSeaweed = seaweed.copy() as! SKSpriteNode
         let newSWPosition = CGPoint(x: 600 + n!, y: 60)
+        if abs(abs(newNPosition.x) - abs(newIPosition.x)) > 50 && abs(abs(newNPosition.x) - abs(newSWPosition.x)) > 50 {
         if netSpawnTimer >= 20 {
             obstacleLayer.addChild(newNet)
             newNet.position = self.convert(newNPosition, to: obstacleLayer)
             netSpawnTimer = 0
         }
+        }
+        if abs(abs(newIPosition.x) - abs(newNPosition.x)) > 50 && abs(abs(newIPosition.x) - abs(newSWPosition.x)) > 50 {
         if itemSpawnTimer >= 10 {
             obstacleLayer.addChild(newItem)
             newItem.position = self.convert(newIPosition, to: obstacleLayer)
             newItem.physicsBody?.applyForce(CGVector(dx: 0, dy: -100))
             itemSpawnTimer = 0
         }
+        }
+        if abs(abs(newSWPosition.x) - abs(newIPosition.x)) > 50 && abs(abs(newSWPosition.x) - abs(newNPosition.x)) > 50 {
         if seaweedSpawnTimer >= 15 {
             obstacleLayer.addChild(newSeaweed)
             newSeaweed.position = self.convert(newSWPosition, to: obstacleLayer)
             newSeaweed.physicsBody?.velocity.dy = CGFloat(-70)
             seaweedSpawnTimer = 0
+        }
         }
     }
     
@@ -524,7 +540,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             hero.physicsBody?.velocity.dy = minVelocity
         }
         if hookState == .connect {
-            if hero.parent!.convert(hero.position, to: self).y < -10 {
+            if hero.parent!.convert(hero.position, to: self).y >= 160 {
+                playersDeath()
+            }
+            if hero.parent!.convert(hero.position, to: self).y < 10 {
                 hookState = .noconnect
                 hero.move(toParent: self)
             }

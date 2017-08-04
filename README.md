@@ -217,15 +217,16 @@ Friday:
 * [goals for the week, should be finishing all core gameplay]
 Monday:
 - particle effect of how much money you earned for particular item, when you collect it(complete)
-- add fishing hook, description given in notes app
 Tuesday: 
-- every 1/4 ground paterns there will be a cave lvl
-- every 50m game speed increases
+- every 50m game speed increases(complete)
 Wednesday:
-- add shop firebase
-- shop power ups: fill the oxygen lvl to max, ivulnerable to all the stuns and roots for 5 sec.,
 Thursday:
 Friday:
+- add shop firebase
+- shop power ups: fill the oxygen lvl to max, ivulnerable to all the stuns and roots for 5 sec.,
+- every fourth ground texture will be a cave texture
+- add fishing hook, description given in notes
+- 
 
 #### Week 4
 _submitting to the App Store_

@@ -7,6 +7,8 @@
 //
 
 import SpriteKit
+import FirebaseAuth
+import FirebaseAuthUI
 
 class MainMenu: SKScene {
     
@@ -14,8 +16,11 @@ class MainMenu: SKScene {
     var shopButton: MSButtonNode!
     var highDistanceScore: SKLabelNode!
     var moneyCounterScore: SKLabelNode!
+    var login: MSButtonNode!
+    static weak var controller: UIViewController!
     
     override func didMove(to view: SKView) {
+        login = childNode(withName: "login") as! MSButtonNode
         highDistanceScore = childNode(withName: "highDistanceScore") as! SKLabelNode
         moneyCounterScore = childNode(withName: "moneyCounterScore") as! SKLabelNode
         shopButton = childNode(withName: "shopButton") as! MSButtonNode
@@ -27,6 +32,13 @@ class MainMenu: SKScene {
         }
         highDistanceScore.text = String(sharedData.high)
         moneyCounterScore.text = String(sharedData.money)
+        login.selectedHandler = {
+            guard let authUI = FUIAuth.defaultAuthUI() else {
+                return
+            }
+            authUI.delegate = self
+            MainMenu.controller.present(authUI.authViewController(), animated: true)
+        }
     }
     
      override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -49,4 +61,30 @@ class MainMenu: SKScene {
             }
         }
      }
+}
+
+extension MainMenu: FUIAuthDelegate {
+    func authUI(_ authUI: FUIAuth, didSignInWith user: FIRUser?, error: Error?) {
+        if let error = error {
+            return
+        }
+        guard let firUser = user else {
+            return
+        }
+        UserService.show(forUID: firUser.uid) { user in
+            if let user = user {
+                User.setCurrent(user, writeToUserDefaults: true)
+            } else {
+                if User.loggedIn {
+                    UserDefaults.standard.set(0, forKey: "money")
+                }
+                UserService.create(firUser, coins: UserDefaults.standard.integer(forKey: "money")) { user in
+                    guard let user = user else {
+                        return
+                    }
+                    User.setCurrent(user, writeToUserDefaults: true)
+                }
+            }
+        }
+    }
 }
