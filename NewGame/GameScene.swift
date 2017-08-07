@@ -143,6 +143,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         hero = childNode(withName: "hero") as! SKSpriteNode
         pauseWindow = childNode(withName: "pauseWindow") as! SKSpriteNode
         oxygenLvl = childNode(withName: "oxygenLvl") as! SKSpriteNode
+        cave = childNode(withName: "//cave") as! SKSpriteNode
         pauseButton = childNode(withName: "pauseButton") as! MSButtonNode
         resume = childNode(withName: "//resumeButton") as! MSButtonNode
         currentDistanceScore = childNode(withName: "currentDistanceScore") as! SKLabelNode
@@ -291,6 +292,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if let hook = hook {
                 hookState = .connect
                 hero.move(toParent: hook)
+                hook.position = hero.position
             }
         }
     }
@@ -364,28 +366,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let newIPosition = CGPoint(x: 600 + n!, y: 60)
         let newSeaweed = seaweed.copy() as! SKSpriteNode
         let newSWPosition = CGPoint(x: 600 + n!, y: 60)
-        if abs(abs(newNPosition.x) - abs(newIPosition.x)) > 50 && abs(abs(newNPosition.x) - abs(newSWPosition.x)) > 50 {
+        if (newIPosition.x > cave.position.x - cave.size.width/2 && newIPosition.x < cave.position.x + cave.size.width/2) {
+            itemSpawnTimer = 0
+        }
+        if (newSWPosition.x > cave.position.x - cave.size.width/2 && newSWPosition.x < cave.position.x + cave.size.width/2) {
+            seaweedSpawnTimer = 0
+        }
+        if (newNPosition.x > cave.position.x - cave.size.width/2 && newNPosition.x < cave.position.x + cave.size.width/2) {
+            netSpawnTimer = 0
+        }
         if netSpawnTimer >= 20 {
             obstacleLayer.addChild(newNet)
             newNet.position = self.convert(newNPosition, to: obstacleLayer)
             netSpawnTimer = 0
         }
-        }
-        if abs(abs(newIPosition.x) - abs(newNPosition.x)) > 50 && abs(abs(newIPosition.x) - abs(newSWPosition.x)) > 50 {
         if itemSpawnTimer >= 10 {
             obstacleLayer.addChild(newItem)
             newItem.position = self.convert(newIPosition, to: obstacleLayer)
             newItem.physicsBody?.applyForce(CGVector(dx: 0, dy: -100))
             itemSpawnTimer = 0
         }
-        }
-        if abs(abs(newSWPosition.x) - abs(newIPosition.x)) > 50 && abs(abs(newSWPosition.x) - abs(newNPosition.x)) > 50 {
         if seaweedSpawnTimer >= 15 {
             obstacleLayer.addChild(newSeaweed)
             newSeaweed.position = self.convert(newSWPosition, to: obstacleLayer)
             newSeaweed.physicsBody?.velocity.dy = CGFloat(-70)
             seaweedSpawnTimer = 0
-        }
         }
     }
     
@@ -516,8 +521,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 print(x)
             timer2 += 15
         }
-        if hero.position.x < -350 {
-            playersDeath()
+        if let parent = hero.parent {
+            if parent.convert(hero.position, to: self).x < -350 {
+                playersDeath()
+            }
         }
         if gameState == .dead {
             playersDeath()
@@ -543,7 +550,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if hero.parent!.convert(hero.position, to: self).y >= 160 {
                 playersDeath()
             }
-            if hero.parent!.convert(hero.position, to: self).y < 10 {
+            if hero.parent!.convert(hero.position, to: self).y < -10 {
                 hookState = .noconnect
                 hero.move(toParent: self)
             }

@@ -222,14 +222,15 @@ Tuesday:
 Wednesday:
 Thursday:
 Friday:
-- add shop firebase
-- shop power ups: fill the oxygen lvl to max, ivulnerable to all the stuns and roots for 5 sec.,
-- every fourth ground texture will be a cave texture
-- add fishing hook, description given in notes
+- add fishing hook, description given in notes(complete)
 - 
 
 #### Week 4
 _submitting to the App Store_
+Wednesday: 
+- add shop firebase(complete)
+- shop power ups: fill the oxygen lvl to max, ivulnerable to all the stuns and roots for 5 sec.,
+- every fourth ground texture will be a cave texture
 * [goals for the week, should be finishing the polish -- demo day on Saturday!]
 
 [Back to top ^](#)
