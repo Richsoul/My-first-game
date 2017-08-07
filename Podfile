@@ -11,6 +11,7 @@ target 'NewGame' do
     pod 'FirebaseUI/Auth'
     pod 'Firebase/Database'
     pod 'Firebase/Storage'
+	pod ‘Firebase/AdMob’
   target 'NewGameTests' do
     inherit! :search_paths
     # Pods for testing

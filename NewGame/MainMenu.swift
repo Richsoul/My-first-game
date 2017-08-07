@@ -9,6 +9,7 @@
 import SpriteKit
 import FirebaseAuth
 import FirebaseAuthUI
+import GoogleMobileAds
 
 class MainMenu: SKScene {
     
@@ -18,6 +19,7 @@ class MainMenu: SKScene {
     var moneyCounterScore: SKLabelNode!
     var login: MSButtonNode!
     static weak var controller: UIViewController!
+    var banner: GADBannerView!
     
     override func didMove(to view: SKView) {
         login = childNode(withName: "login") as! MSButtonNode
@@ -39,6 +41,15 @@ class MainMenu: SKScene {
             authUI.delegate = self
             MainMenu.controller.present(authUI.authViewController(), animated: true)
         }
+        showAd()
+    }
+    
+    func showAd() {
+        banner = GADBannerView(adSize: kGADAdSizeSmartBannerLandscape)
+        banner.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        banner.rootViewController = MainMenu.controller
+        MainMenu.controller.view.addSubview(banner)
+        banner.load(GADRequest())
     }
     
      override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -56,6 +67,7 @@ class MainMenu: SKScene {
             guard let scene = GameScene(fileNamed:"GameScene") else {
                 return
             }
+            banner.removeFromSuperview()
             scene.scaleMode = .aspectFit
             skView.presentScene(scene)
             }

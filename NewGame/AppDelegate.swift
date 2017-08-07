@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         FirebaseApp.configure()
+        GADMobileAds.configure(withApplicationID: "ca-app-pub-7382032268110091~7821215474")
         if Auth.auth().currentUser != nil,
             let userData = UserDefaults.standard.object(forKey: "CurrentUser") as? Data,
             let user = NSKeyedUnarchiver.unarchiveObject(with: userData) as? User {
