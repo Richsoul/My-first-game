@@ -37,7 +37,7 @@ class DeathScene: SKScene, SKPhysicsContactDelegate {
         moneyCounterScore.text = String(sharedData.money)
     }
     
-    func buttonFunc(fileName: String, direction: String) { //custom button transfer, for any situation
+    func buttonFunc(fileName: String, direction: String) {
         button = childNode(withName: fileName) as! MSButtonNode
         button.selectedHandler = {[unowned self] in
             guard let skView = self.view as SKView! else {

@@ -41,7 +41,7 @@ class SharedData {
             return UserDefaults.standard.integer(forKey: "refill")
         }
         set(refill) {
-            UserDefaults.standard.set(money, forKey: "refill")
+            UserDefaults.standard.set(refill, forKey: "refill")
         }
     }
     var ivul: Int {
@@ -49,7 +49,7 @@ class SharedData {
             return UserDefaults.standard.integer(forKey: "ivul")
         }
         set(ivul) {
-            UserDefaults.standard.set(money, forKey: "ivul")
+            UserDefaults.standard.set(ivul, forKey: "ivul")
         }
     }
 }
@@ -76,13 +76,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     enum Hook {
         case connect, noconnect
     }
-    enum PowerUp {
-        case ivul, refill, none
-    }
     let sData = SharedData.data
     var gameState: GameState = .running
     var obstacleKind: Obstacle = .none
-    var powerUp: PowerUp = .none
     var hookState: Hook = .noconnect
     var water:        SKSpriteNode!
     var hero:         SKSpriteNode!
@@ -115,6 +111,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var obstacleNode:   SKNode!
     var fisherBoat:     SKNode!
     var waves:          SKNode!
+    var background:     SKNode!
     var fixedDelta:        CFTimeInterval = 1.0 / 60.0
     var netSpawnTimer:     CFTimeInterval = 4
     var boatSpawnTimer:    CFTimeInterval = 14
@@ -124,6 +121,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var refillTimer:       CFTimeInterval = 0
     var ivulTimer:         CFTimeInterval = 0
     var holding: Bool = false
+    var refillPU: Bool = false
+    var ivulPU: Bool = false
     var diveForce = 0
     var fishBoatSpeed: CGFloat!
     var scrollSpeed:   CGFloat!
@@ -137,6 +136,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         didSet {
             oxygenLvl.xScale = health
             if health > 1.0 { health = 1.0 }
+            if health < 0.15 {
+                
+            }
             if health < 0 {
                 health = 0
                 gameState = .dead
@@ -160,17 +162,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         item =        childNode(withName: "//item")       as! SKSpriteNode
         item2 =       childNode(withName: "//item2")      as! SKSpriteNode
         item3 =       childNode(withName: "//item3")      as! SKSpriteNode
-        resume =      childNode(withName: "//resumeButton") as! MSButtonNode
         refill =      childNode(withName: "refill")         as! MSButtonNode
         ivul =        childNode(withName: "ivulnerable")    as! MSButtonNode
+        resume =      childNode(withName: "//resumeButton") as! MSButtonNode
         currentDistanceScore =  childNode(withName: "currentDistanceScore")    as! SKLabelNode
         moneyCounterScore =     childNode(withName: "moneyCounterScore")       as! SKLabelNode
+        countDown =             childNode(withName: "//countDown")             as! SKLabelNode
+        refCounter =            childNode(withName: "//refCount")              as! SKLabelNode
+        ivulCounter =           childNode(withName: "//ivulCount")             as! SKLabelNode
         highestDistanceScore2 = childNode(withName: "//highestDistanceScore2") as! SKLabelNode
         currentDistanceScore2 = childNode(withName: "//currentDistanceScore2") as! SKLabelNode
         moneyCounterScore2 =    childNode(withName: "//moneyCounterScore2")    as! SKLabelNode
-        countDown =             childNode(withName: "countDown")               as! SKLabelNode
-        refCounter =            childNode(withName: "refCounter")              as! SKLabelNode
-        ivulCounter =           childNode(withName: "ivulCounter")             as! SKLabelNode
         scrollLayer =    self.childNode(withName: "scrollLayer")
         shallowLayer =   self.childNode(withName: "shallowLayer")
         boatLayer =      self.childNode(withName: "boatLayer")
@@ -178,6 +180,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         obstacleSource = self.childNode(withName: "obstacle")
         fisherBoat =     self.childNode(withName: "fisherBoat")
         waves =          self.childNode(withName: "waves")
+        background =     self.childNode(withName: "BG")
         buttonFunc(fileName: "//restartButton", direction: "GameScene")
         buttonFunc(fileName: "//mainMenuButton", direction: "MainMenu")
         pauseWindow.isHidden = true
@@ -193,13 +196,17 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             self.isPaused = false
         }
         refill.selectedHandler = {[unowned self] in
-            self.powerUp = .refill
-            self.sData.refill -= 1
+            if self.sData.refill > 0 {
+                self.refillPU = true
+                self.sData.refill -= 1
+            }
         }
         ivul.selectedHandler = {[unowned self] in
-            self.powerUp = .ivul
-            self.countDown.isHidden = false
-            self.sData.ivul -= 1
+            if self.sData.ivul > 0 {
+                self.ivulPU = true
+                self.countDown.isHidden = false
+                self.sData.ivul -= 1
+            }
         }
         hero.position.x = -175
         scrollSpeed = x
@@ -207,8 +214,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         diveForce = y
         maxVelocity = z
         minVelocity = -z
-        sData.refill = 100
-        sData.ivul = 100
     }//override func didMove
     
     func particleEffect(node:SKSpriteNode) {
@@ -294,7 +299,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         if let seaweed = seaweed {
             if hero != nil {
-                if powerUp != .ivul {
+                if ivulPU == false {
                     obstacleKind = .seaweed
                     obstacleNode = seaweed
                 }
@@ -308,20 +313,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 particleEffect(node: item)
             }
             if let fishNet = fishNet {
-                if powerUp != .ivul {
+                if ivulPU == false {
                     obstacleKind = .fishNet
                     obstacleNode = fishNet
                     fishNet.isHidden = true
                 }
             }
             if boat != nil {
-                if powerUp != .ivul {
+                if ivulPU == false {
                     hero.physicsBody?.applyImpulse(CGVector(dx:0, dy: -13))
                     health -= 0.05
                 }
             }
             if let hook = hook {
-                if powerUp != .ivul {
+                if ivulPU == false {
                     hookState = .connect
                     hero.move(toParent: hook)
                 }
@@ -353,6 +358,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
     }//scrollShallow()
+    func scrollBG() {
+        background.position.x -= (scrollSpeed / 3) * CGFloat(fixedDelta)
+        for BG in background.children as! [SKSpriteNode] {
+            let BGPosition = background.convert(BG.position, to: self)
+            if BGPosition.x <= -BG.size.width / 2 - self.size.width / 2 {
+                let newPosition = CGPoint(x: 782.666, y: BG.position.y)
+                BG.position = self.convert(newPosition, to: background)
+            }
+        }
+    }//scrollBG()
     
     func updateBoat() {
         boatLayer.position.x -= (scrollSpeed + 100) * CGFloat(fixedDelta)
@@ -366,7 +381,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if boatSpawnTimer >= 24 {
             let newBoat = boat1.copy() as! SKSpriteNode
             boatLayer.addChild(newBoat)
-            let newPosition = CGPoint(x: 800, y: 100)
+            let newPosition = CGPoint(x: 800, y: 65)
             newBoat.position = self.convert(newPosition, to: boatLayer)
             boatSpawnTimer = 0
         }
@@ -387,13 +402,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let randomArray: [CGFloat?] = [-100, -50, 0, 50, 100]
         let n = randomArray[Int(arc4random_uniform(4))]
         let newNet = fishingNet.copy() as! SKSpriteNode
-        let newNPosition = CGPoint(x: 500 + n!, y: 8)
+        let newNPosition = CGPoint(x: 500 + n!, y: -30)
         let m = Int(arc4random_uniform(3))
         let itemArray: [SKSpriteNode?] = [item, item2, item3]
         let newItem = itemArray[m]?.copy() as! SKSpriteNode
-        let newIPosition = CGPoint(x: 600 + n!, y: 60)
+        let newIPosition = CGPoint(x: 600 + n!, y: 28)
         let newSeaweed = seaweed.copy() as! SKSpriteNode
-        let newSWPosition = CGPoint(x: 600 + n!, y: 60)
+        let newSWPosition = CGPoint(x: 600 + n!, y: 28)
         if netSpawnTimer >= 20 {
             obstacleLayer.addChild(newNet)
             newNet.position = self.convert(newNPosition, to: obstacleLayer)
@@ -419,7 +434,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let wavePosition = waves.convert(wave.position, to: self)
             let limit = (scene?.size.width)!/2 + wave.size.width / 2
             if wavePosition.x <= -limit {
-                let newPosition = CGPoint(x: limit - 2, y: wavePosition.y)
+                let newPosition = CGPoint(x: 958.5, y: wavePosition.y)
                 wave.position = self.convert(newPosition, to: waves)
             }
         }
@@ -427,9 +442,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func fisherBoatFunc() {
         fisherBoat.position.x -= fishBoatSpeed * CGFloat(fixedDelta)
         for fishingRod in fisherBoat.children as! [SKSpriteNode] {
-            let obstaclePosition = obstacleLayer.convert(fishingRod.position, to: self)
+            let obstaclePosition = fisherBoat.convert(fishingRod.position, to: self)
             if hookState == .connect {
                 fishingRod.physicsBody?.applyForce(CGVector(dx: 0, dy: 20))
+                fishBoatSpeed =  20
             }
             if obstaclePosition.x <= -320 {
                 fishingRod.removeFromParent()
@@ -437,11 +453,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             let randomArray: [CGFloat?] = [-100, -50, 0, 50, 100]
             let n = randomArray[Int(arc4random_uniform(4))]
             let newHook = fisher.copy() as! SKSpriteNode
-            let newHPosition = CGPoint(x: 600 + n!, y: 305)
+            let newHPosition = CGPoint(x: 600 + n!, y: 318)
             if boatSpawnTimer > 14.01 && boatSpawnTimer < 14.03 {
                 obstacleLayer.addChild(newHook)
-                newHook.position = self.convert(newHPosition, to: obstacleLayer)
-                newHook.physicsBody?.velocity.dy = CGFloat(-70)
+                newHook.position = self.convert(newHPosition, to: fisherBoat)
             }
         }
     }//fisherBoatFunc()
@@ -487,10 +502,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }//float()
     
     func oxygenlvl() {
-        if hero.position.y >= 80 {
+        if hero.position.y >= 30 {
             health += CGFloat(0.24 / 60)
         } else {
-            if powerUp != .refill {
+            if refillPU == false {
                 health -= CGFloat(0.08 / 60)
             }
         }
@@ -540,6 +555,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         fisherBoatFunc()
         waveFunc()
         oxygenlvl()
+        scrollBG()
         if hero.parent == self {
             float()
         }
@@ -551,7 +567,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 playersDeath()
             }
         }
-        if powerUp == .ivul {
+        if ivulPU == true {
             ivulTimer += fixedDelta
             switch Int(ivulTimer) {
             case 0:
@@ -565,18 +581,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             default:
                 break
             }//switch
+            ivul.isUserInteractionEnabled = false
             if ivulTimer > 3 {
-                powerUp = .none
+                ivulPU = false
                 ivulTimer = 0
                 countDown.isHidden = true
+                ivul.isUserInteractionEnabled = true
             }
         }//if powerUp == .ivul
-        if powerUp == .refill {
+        if refillPU == true {
             refillTimer += fixedDelta
             health += CGFloat(0.4/60)
+            refill.isUserInteractionEnabled = false
             if refillTimer >= 0.5 {
-                powerUp = .none
+                refillPU = false
                 refillTimer = 0
+                refill.isUserInteractionEnabled = true
             }
         }
         timer += fixedDelta

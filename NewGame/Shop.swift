@@ -8,32 +8,48 @@
 
 import SpriteKit
 
+
 class Shop: SKScene {
-    
-    var button: MSButtonNode!
-    var back: MSButtonNode!
+    var sharedData = SharedData.data
+    var back:      MSButtonNode!
+    var buyRefill: MSButtonNode!
+    var buyIvul:   MSButtonNode!
+    var refillCounter: SKLabelNode!
+    var ivulCounter:   SKLabelNode!
+    var refillCost:    SKLabelNode!
+    var ivulCost:      SKLabelNode!
+    var cost : Int = 25
+    var cost2 : Int = 30
     weak var backScene: SKScene!
     
     override func didMove(to view: SKView) {
-        back = childNode(withName: "goBackButton") as! MSButtonNode!
+        buyRefill = childNode(withName: "buyButton1")   as! MSButtonNode
+        buyIvul =   childNode(withName: "buyButton2")   as! MSButtonNode
+        back =      childNode(withName: "goBackButton") as! MSButtonNode
+        refillCounter = childNode(withName: "refillPU")   as! SKLabelNode
+        ivulCounter =   childNode(withName: "ivulPU")     as! SKLabelNode
+        refillCost =    childNode(withName: "refillCost") as! SKLabelNode
+        ivulCost =      childNode(withName: "ivulCost")   as! SKLabelNode
         back.selectedHandler = {[unowned self] in
             view.presentScene(self.backScene)
         }
-    }
-    
-    
-    func buttonFunc(fileName: String, direction: String) { //custom button transfer, for any situation
-        button = childNode(withName: "\(fileName)") as! MSButtonNode
-        button.selectedHandler = {[unowned self] in
-            guard let skView = self.view as SKView! else {
-                return
+        buyRefill.selectedHandler = {[unowned self] in
+            if self.sharedData.money > self.cost {
+            self.sharedData.refill += 1
+            self.sharedData.money -= self.cost
             }
-            guard let scene = SKScene(fileNamed:"\(direction)") else {
-                return
+        }
+        buyIvul.selectedHandler = {[unowned self] in
+            if self.sharedData.money > self.cost2 {
+            self.sharedData.ivul += 1
+            self.sharedData.money -= self.cost2
             }
-            scene.scaleMode = .aspectFit
-            skView.presentScene(scene)
         }
     }
-
+    override func update(_ currentTime: TimeInterval) {
+        refillCounter.text = String(sharedData.refill)
+        ivulCounter.text =   String(sharedData.ivul)
+        refillCost.text =    String(cost)
+        ivulCost.text =      String(cost2)
+    }
 }
