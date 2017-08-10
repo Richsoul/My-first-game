@@ -112,6 +112,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var fisherBoat:     SKNode!
     var waves:          SKNode!
     var background:     SKNode!
+    var middleground:   SKNode!
+    var foreground:     SKNode!
     var fixedDelta:        CFTimeInterval = 1.0 / 60.0
     var netSpawnTimer:     CFTimeInterval = 4
     var boatSpawnTimer:    CFTimeInterval = 14
@@ -181,6 +183,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         fisherBoat =     self.childNode(withName: "fisherBoat")
         waves =          self.childNode(withName: "waves")
         background =     self.childNode(withName: "BG")
+        middleground =   self.childNode(withName: "MG")
+        foreground =     self.childNode(withName: "FG")
         buttonFunc(fileName: "//restartButton", direction: "GameScene")
         buttonFunc(fileName: "//mainMenuButton", direction: "MainMenu")
         pauseWindow.isHidden = true
@@ -252,29 +256,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let nodeA = contactA.node as! SKSpriteNode
         let nodeB = contactB.node as! SKSpriteNode
         
-        var hero: SKSpriteNode!
+        var diver: SKSpriteNode!
         if contactA.categoryBitMask == 1 {
-            hero = nodeA
+            diver = nodeA
         } else if contactB.categoryBitMask == 1 {
-            hero = nodeB
-        }
-        var seaweed: SKSpriteNode!
-        if contactA.categoryBitMask == 16 {
-            seaweed = nodeA
-        } else if contactB.categoryBitMask == 16 {
-            seaweed = nodeB
-        }
-        var item: SKSpriteNode!
-        if contactA.categoryBitMask == 8 {
-            item = nodeA
-        } else if contactB.categoryBitMask == 8 {
-            item = nodeB
-        }
-        var ground: SKSpriteNode!
-        if contactA.categoryBitMask == 32 {
-            ground = nodeA
-        } else if contactB.categoryBitMask == 32 {
-            ground = nodeB
+            diver = nodeB
         }
         var fishNet: SKSpriteNode!
         if contactA.categoryBitMask == 2 {
@@ -282,54 +268,74 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else if contactB.categoryBitMask == 2 {
             fishNet = nodeB
         }
+        var item: SKSpriteNode!
+        if contactA.categoryBitMask == 8 {
+            item = nodeA
+        } else if contactB.categoryBitMask == 8 {
+            item = nodeB
+        }
+        var seaweed: SKSpriteNode!
+        if contactA.categoryBitMask == 16 {
+            seaweed = nodeA
+        } else if contactB.categoryBitMask == 16 {
+            seaweed = nodeB
+        }
+        var ground: SKSpriteNode!
+        if contactA.categoryBitMask == 32 {
+            ground = nodeA
+        } else if contactB.categoryBitMask == 32 {
+            ground = nodeB
+        }
         var boat: SKSpriteNode!
         if contactA.categoryBitMask == 64 {
             boat = nodeA
-        } else if contactA.categoryBitMask == 64 {
+        } else if contactB.categoryBitMask == 64 {
             boat = nodeB
         }
         var hook: SKSpriteNode!
         if contactA.categoryBitMask == 128 {
             hook = nodeA
+            print(contactB.categoryBitMask)
         } else if contactB.categoryBitMask == 128 {
             hook = nodeB
+            print(contactA.categoryBitMask)
         }
         
         
         
         if let seaweed = seaweed {
-            if hero != nil {
-                if ivulPU == false {
+            if diver != nil {
+               // if ivulPU == false {
                     obstacleKind = .seaweed
                     obstacleNode = seaweed
-                }
+                //}
             }
             if ground != nil {
                 seaweed.physicsBody?.isDynamic = false
             }
         }
-        if let hero = hero {
+        if diver != nil {
             if let item = item {
                 particleEffect(node: item)
             }
             if let fishNet = fishNet {
-                if ivulPU == false {
+               // if ivulPU == false {
                     obstacleKind = .fishNet
                     obstacleNode = fishNet
                     fishNet.isHidden = true
-                }
+               // }
             }
             if boat != nil {
-                if ivulPU == false {
-                    hero.physicsBody?.applyImpulse(CGVector(dx:0, dy: -13))
+               // if ivulPU == false {
+                    diver.physicsBody?.applyImpulse(CGVector(dx:0, dy: -13))
                     health -= 0.05
-                }
+               //}
             }
             if let hook = hook {
-                if ivulPU == false {
+                //if ivulPU == false {
                     hookState = .connect
                     hero.move(toParent: hook)
-                }
+                //}
             }
         }
     }//didBegin()
@@ -359,15 +365,36 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }//scrollShallow()
     func scrollBG() {
-        background.position.x -= (scrollSpeed / 3) * CGFloat(fixedDelta)
+        background.position.x -= (scrollSpeed / 4) * CGFloat(fixedDelta)
         for BG in background.children as! [SKSpriteNode] {
             let BGPosition = background.convert(BG.position, to: self)
-            if BGPosition.x <= -BG.size.width / 2 - self.size.width / 2 {
+            if BGPosition.x <= -BG.size.width / 2 - 284 {
                 let newPosition = CGPoint(x: 782.666, y: BG.position.y)
                 BG.position = self.convert(newPosition, to: background)
             }
         }
     }//scrollBG()
+    
+    func scrollMG() {
+        middleground.position.x -= (scrollSpeed / 3) * CGFloat(fixedDelta)
+        for MG in middleground.children as! [SKSpriteNode] {
+            let MGPosition = middleground.convert(MG.position, to: self)
+            if MGPosition.x <= -MG.size.width / 2 - 284 {
+                let newPosition = CGPoint(x: 868, y: MG.position.y)
+                MG.position = newPosition
+            }
+        }
+    }//scrollMG
+    
+    func scrollFG() {
+        foreground.position.x -= (scrollSpeed / 2) * CGFloat(fixedDelta)
+        for FG in foreground.children as! [SKSpriteNode] {
+            let FGPosition = foreground.convert(FG.position, to: self)
+            if FGPosition.x <= -FG.size.width / 2 - 284 {
+                let newPosition = CGPoint(x: 908.5, y: FG.position.y)
+                FG.position = newPosition            }
+        }
+    }//scrollFG
     
     func updateBoat() {
         boatLayer.position.x -= (scrollSpeed + 100) * CGFloat(fixedDelta)
@@ -400,15 +427,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             
         }
         let randomArray: [CGFloat?] = [-100, -50, 0, 50, 100]
-        let n = randomArray[Int(arc4random_uniform(4))]
+        let n = randomArray[Int(arc4random_uniform(4))]!
         let newNet = fishingNet.copy() as! SKSpriteNode
-        let newNPosition = CGPoint(x: 500 + n!, y: -30)
+        let newNPosition = CGPoint(x: 500 + n, y: -30)
         let m = Int(arc4random_uniform(3))
         let itemArray: [SKSpriteNode?] = [item, item2, item3]
         let newItem = itemArray[m]?.copy() as! SKSpriteNode
-        let newIPosition = CGPoint(x: 600 + n!, y: 28)
+        let newIPosition = CGPoint(x: 600 + n, y: 28)
         let newSeaweed = seaweed.copy() as! SKSpriteNode
-        let newSWPosition = CGPoint(x: 600 + n!, y: 28)
+        let newSWPosition = CGPoint(x: 600 + n, y: 28)
         if netSpawnTimer >= 20 {
             obstacleLayer.addChild(newNet)
             newNet.position = self.convert(newNPosition, to: obstacleLayer)
@@ -417,7 +444,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if itemSpawnTimer >= 10 {
             obstacleLayer.addChild(newItem)
             newItem.position = self.convert(newIPosition, to: obstacleLayer)
-            newItem.physicsBody?.applyForce(CGVector(dx: 0, dy: -100))
+            newItem.physicsBody?.applyForce(CGVector(dx: 0, dy: -30))
             itemSpawnTimer = 0
         }
         if seaweedSpawnTimer >= 15 {
@@ -443,20 +470,20 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         fisherBoat.position.x -= fishBoatSpeed * CGFloat(fixedDelta)
         for fishingRod in fisherBoat.children as! [SKSpriteNode] {
             let obstaclePosition = fisherBoat.convert(fishingRod.position, to: self)
-            if hookState == .connect {
-                fishingRod.physicsBody?.applyForce(CGVector(dx: 0, dy: 20))
-                fishBoatSpeed =  20
-            }
             if obstaclePosition.x <= -320 {
                 fishingRod.removeFromParent()
             }
-            let randomArray: [CGFloat?] = [-100, -50, 0, 50, 100]
-            let n = randomArray[Int(arc4random_uniform(4))]
-            let newHook = fisher.copy() as! SKSpriteNode
-            let newHPosition = CGPoint(x: 600 + n!, y: 318)
-            if boatSpawnTimer > 14.01 && boatSpawnTimer < 14.03 {
-                obstacleLayer.addChild(newHook)
-                newHook.position = self.convert(newHPosition, to: fisherBoat)
+        }
+        let randomArray: [CGFloat?] = [-100, -50, 0, 50, 100]
+        let n = randomArray[Int(arc4random_uniform(4))]!
+        let newHook = fisher.copy() as! SKSpriteNode
+        let newHPosition = CGPoint(x: 600 + n, y: 300)
+        if boatSpawnTimer > 14.29 && boatSpawnTimer < 14.31 {
+            obstacleLayer.addChild(newHook)
+            newHook.position = self.convert(newHPosition, to: fisherBoat)
+            if hookState == .connect {
+                newHook.physicsBody?.applyForce(CGVector(dx:0, dy: 20))
+                fishBoatSpeed = 20
             }
         }
     }//fisherBoatFunc()
@@ -556,6 +583,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         waveFunc()
         oxygenlvl()
         scrollBG()
+        scrollFG()
+        scrollMG()
         if hero.parent == self {
             float()
         }
@@ -629,6 +658,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 if hero.parent!.convert(hero.position, to: self).y < -10 {
                     hookState = .noconnect
                     hero.move(toParent: self)
+                    fishBoatSpeed = x
                 }
             }//if let parent = hero.parent
         }//if hookState == .connect
