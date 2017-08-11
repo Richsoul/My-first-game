@@ -7,9 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0C17C4461F16BBCA006EBAE9 /* Download CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C17C4451F16BBCA006EBAE9 /* Download CGFloat+Extensions.swift */; };
+		0C17C4461F16BBCA006EBAE9 /* CGFloat+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C17C4451F16BBCA006EBAE9 /* CGFloat+Extensions.swift */; };
 		0C30DDD61F2F99B20042C598 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0C30DDD51F2F99B20042C598 /* GameScene.sks */; };
 		0C4B5F0A1F34EAA7001A2EC9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C4B5F091F34EAA7001A2EC9 /* GoogleService-Info.plist */; };
+		0C7B22551F3D002B00DC1C3B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B22531F3D002B00DC1C3B /* Constants.swift */; };
+		0C7B22561F3D002B00DC1C3B /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7B22541F3D002B00DC1C3B /* StoreService.swift */; };
+		0C7B22581F3D003500DC1C3B /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C7B22571F3D003500DC1C3B /* StoreKit.framework */; };
 		0C9109BC1F229B950066E3F3 /* HeroFeatres.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C9109BB1F229B950066E3F3 /* HeroFeatres.swift */; };
 		0CC87C631F1425C800A69973 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC87C621F1425C800A69973 /* AppDelegate.swift */; };
 		0CC87C671F1425C800A69973 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 0CC87C661F1425C800A69973 /* Actions.sks */; };
@@ -55,9 +58,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0C17C4451F16BBCA006EBAE9 /* Download CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Download CGFloat+Extensions.swift"; sourceTree = "<group>"; };
+		0C17C4451F16BBCA006EBAE9 /* CGFloat+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extensions.swift"; sourceTree = "<group>"; };
 		0C30DDD51F2F99B20042C598 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		0C4B5F091F34EAA7001A2EC9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0C7B22531F3D002B00DC1C3B /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		0C7B22541F3D002B00DC1C3B /* StoreService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
+		0C7B22571F3D003500DC1C3B /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		0C9109BB1F229B950066E3F3 /* HeroFeatres.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeroFeatres.swift; sourceTree = "<group>"; };
 		0CC87C5F1F1425C800A69973 /* NewGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NewGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0CC87C621F1425C800A69973 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +109,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DF67FBE685466BDF8F868CE0 /* Pods_NewGame.framework in Frameworks */,
+				0C7B22581F3D003500DC1C3B /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -164,6 +171,8 @@
 		0CC87C611F1425C800A69973 /* NewGame */ = {
 			isa = PBXGroup;
 			children = (
+				0C7B22531F3D002B00DC1C3B /* Constants.swift */,
+				0C7B22541F3D002B00DC1C3B /* StoreService.swift */,
 				0C4B5F091F34EAA7001A2EC9 /* GoogleService-Info.plist */,
 				0CCED6B61F34E4CB00E672A2 /* User.swift */,
 				0CCED6B71F34E4CB00E672A2 /* UserService.swift */,
@@ -183,7 +192,7 @@
 				0CC87C6A1F1425C800A69973 /* GameViewController.swift */,
 				0CC87C6C1F1425C800A69973 /* Main.storyboard */,
 				0CC87C9A1F14261000A69973 /* MSButtonNode.swift */,
-				0C17C4451F16BBCA006EBAE9 /* Download CGFloat+Extensions.swift */,
+				0C17C4451F16BBCA006EBAE9 /* CGFloat+Extensions.swift */,
 				0CC87C6F1F1425C800A69973 /* Assets.xcassets */,
 				0CC87C711F1425C800A69973 /* LaunchScreen.storyboard */,
 				0C9109BB1F229B950066E3F3 /* HeroFeatres.swift */,
@@ -213,6 +222,7 @@
 		180E6F85FFC2642001634602 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0C7B22571F3D003500DC1C3B /* StoreKit.framework */,
 				E0D2B4F34AA113830F341770 /* Pods_NewGame.framework */,
 				F024154004A6693988E2640E /* Pods_NewGameTests.framework */,
 				43535B47764E8F74334472A6 /* Pods_NewGameUITests.framework */,
@@ -299,6 +309,11 @@
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = R573VR9DT7;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+						};
 					};
 					0CC87C781F1425C800A69973 = {
 						CreatedOnToolsVersion = 8.3.3;
@@ -534,13 +549,15 @@
 				0CF6BC6C1F157A1000C4ED67 /* Shop.swift in Sources */,
 				0CC87C9D1F14262400A69973 /* MainMenu.swift in Sources */,
 				0CC87C691F1425C800A69973 /* GameScene.swift in Sources */,
-				0C17C4461F16BBCA006EBAE9 /* Download CGFloat+Extensions.swift in Sources */,
+				0C7B22561F3D002B00DC1C3B /* StoreService.swift in Sources */,
+				0C17C4461F16BBCA006EBAE9 /* CGFloat+Extensions.swift in Sources */,
 				0CC87C6B1F1425C800A69973 /* GameViewController.swift in Sources */,
 				0CCED6B91F34E4CB00E672A2 /* UserService.swift in Sources */,
 				0CC87C631F1425C800A69973 /* AppDelegate.swift in Sources */,
 				0CC87C9B1F14261000A69973 /* MSButtonNode.swift in Sources */,
 				0CCED6B81F34E4CB00E672A2 /* User.swift in Sources */,
 				0C9109BC1F229B950066E3F3 /* HeroFeatres.swift in Sources */,
+				0C7B22551F3D002B00DC1C3B /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -696,9 +713,10 @@
 				DEVELOPMENT_TEAM = R573VR9DT7;
 				INFOPLIST_FILE = NewGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.baizhan.divingGame;
+				PRODUCT_BUNDLE_IDENTIFIER = com.baizhan.treasurehunt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -710,9 +728,10 @@
 				DEVELOPMENT_TEAM = R573VR9DT7;
 				INFOPLIST_FILE = NewGame/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.baizhan.divingGame;
+				PRODUCT_BUNDLE_IDENTIFIER = com.baizhan.treasurehunt;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

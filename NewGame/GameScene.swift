@@ -103,6 +103,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var countDown:             SKLabelNode!
     var refCounter:            SKLabelNode!
     var ivulCounter:           SKLabelNode!
+    var currentDistanceLabel:  SKLabelNode!
+    var moneyCounterLabel:     SKLabelNode!
     var scrollLayer:    SKNode!
     var shallowLayer:   SKNode!
     var boatLayer:      SKNode!
@@ -114,7 +116,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var background:     SKNode!
     var middleground:   SKNode!
     var foreground:     SKNode!
-    var fixedDelta:        CFTimeInterval = 1.0 / 60.0
     var netSpawnTimer:     CFTimeInterval = 4
     var boatSpawnTimer:    CFTimeInterval = 14
     var itemSpawnTimer:    CFTimeInterval = 6
@@ -122,6 +123,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var timer:             CFTimeInterval = 0
     var refillTimer:       CFTimeInterval = 0
     var ivulTimer:         CFTimeInterval = 0
+    var deltaTime:         TimeInterval   = 0
+    var lastTime:          TimeInterval?
     var holding: Bool = false
     var refillPU: Bool = false
     var ivulPU: Bool = false
@@ -167,14 +170,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         refill =      childNode(withName: "refill")         as! MSButtonNode
         ivul =        childNode(withName: "ivulnerable")    as! MSButtonNode
         resume =      childNode(withName: "//resumeButton") as! MSButtonNode
-        currentDistanceScore =  childNode(withName: "currentDistanceScore")    as! SKLabelNode
-        moneyCounterScore =     childNode(withName: "moneyCounterScore")       as! SKLabelNode
-        countDown =             childNode(withName: "//countDown")             as! SKLabelNode
-        refCounter =            childNode(withName: "//refCount")              as! SKLabelNode
-        ivulCounter =           childNode(withName: "//ivulCount")             as! SKLabelNode
-        highestDistanceScore2 = childNode(withName: "//highestDistanceScore2") as! SKLabelNode
-        currentDistanceScore2 = childNode(withName: "//currentDistanceScore2") as! SKLabelNode
-        moneyCounterScore2 =    childNode(withName: "//moneyCounterScore2")    as! SKLabelNode
+        currentDistanceScore =  childNode(withName: "currentDistanceScore")     as! SKLabelNode
+        moneyCounterScore =     childNode(withName: "moneyCounterScore")        as! SKLabelNode
+        countDown =             childNode(withName: "//countDown")              as! SKLabelNode
+        refCounter =            childNode(withName: "//refCount")               as! SKLabelNode
+        ivulCounter =           childNode(withName: "//ivulCount")              as! SKLabelNode
+        highestDistanceScore2 = childNode(withName: "//highestDistanceScore2")  as! SKLabelNode
+        currentDistanceScore2 = childNode(withName: "//currentDistanceScore2")  as! SKLabelNode
+        moneyCounterScore2 =    childNode(withName: "//moneyCounterScore2")     as! SKLabelNode
+        moneyCounterLabel = self.childNode(withName: "moneyCounterLabel")       as! SKLabelNode
+        currentDistanceLabel = self.childNode(withName: "currentDistanceLabel") as! SKLabelNode!
         scrollLayer =    self.childNode(withName: "scrollLayer")
         shallowLayer =   self.childNode(withName: "shallowLayer")
         boatLayer =      self.childNode(withName: "boatLayer")
@@ -194,10 +199,22 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         pause.selectedHandler = {[unowned self] in
             self.pauseWindow.isHidden = false
             self.isPaused = true
+            self.pause.isHidden = true
+            self.oxygenLvl.isHidden = true
+            self.currentDistanceScore.isHidden = true
+            self.moneyCounterScore.isHidden = true
+            self.currentDistanceLabel.isHidden = true
+            self.moneyCounterLabel.isHidden = true
         }
         resume.selectedHandler = {[unowned self] in
             self.pauseWindow.isHidden = true
             self.isPaused = false
+            self.pause.isHidden = false
+            self.oxygenLvl.isHidden = false
+            self.currentDistanceScore.isHidden = false
+            self.moneyCounterScore.isHidden = false
+            self.currentDistanceLabel.isHidden = false
+            self.moneyCounterLabel.isHidden = false
         }
         refill.selectedHandler = {[unowned self] in
             if self.sData.refill > 0 {
@@ -227,7 +244,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let wait = SKAction.wait(forDuration: 3)
         let removeParticles = SKAction.removeFromParent()
         let seq = SKAction.sequence([wait, removeParticles])
-        let positionInScene  = node.positionInScene
+        let positionInScene = node.positionInScene
+        if positionInScene != nil {
         switch node.name{
         case "item"?:
             addChild(particles1)
@@ -247,14 +265,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         default:
             break
         }
+        }
         node.removeFromParent()
     }//particleEffect()
     
     func didBegin(_ contact: SKPhysicsContact) {
         let contactA:SKPhysicsBody = contact.bodyA
         let contactB:SKPhysicsBody = contact.bodyB
-        let nodeA = contactA.node as! SKSpriteNode
-        let nodeB = contactB.node as! SKSpriteNode
+        guard let nodeA = contactA.node as? SKSpriteNode else {
+            return
+        }
+        guard let nodeB = contactB.node as? SKSpriteNode else {
+            return
+        }
         
         var diver: SKSpriteNode!
         if contactA.categoryBitMask == 1 {
@@ -268,11 +291,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         } else if contactB.categoryBitMask == 2 {
             fishNet = nodeB
         }
-        var item: SKSpriteNode!
+        var itemNode: SKSpriteNode!
         if contactA.categoryBitMask == 8 {
-            item = nodeA
+            itemNode = nodeA
         } else if contactB.categoryBitMask == 8 {
-            item = nodeB
+            itemNode = nodeB
         }
         var seaweed: SKSpriteNode!
         if contactA.categoryBitMask == 16 {
@@ -315,8 +338,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         if diver != nil {
-            if let item = item {
-                particleEffect(node: item)
+            if itemNode != nil {
+                particleEffect(node: itemNode)
             }
             if let fishNet = fishNet {
                // if ivulPU == false {
@@ -335,6 +358,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 //if ivulPU == false {
                     hookState = .connect
                     hero.move(toParent: hook)
+                    hook.physicsBody?.applyForce(CGVector(dx:0, dy: 20))
+                    fishBoatSpeed = 20
                 //}
             }
         }
@@ -347,17 +372,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }//playersDeath()
     func scrollWorld() {
-        scrollLayer.position.x -= scrollSpeed * CGFloat(fixedDelta)
+        scrollLayer.position.x -= scrollSpeed * CGFloat(deltaTime)
         for ground in scrollLayer.children as! [SKSpriteNode] {
             let groundPosition = scrollLayer.convert(ground.position, to: self)
             if groundPosition.x <= -ground.size.width / 2 - 510{
-                let newPosition = CGPoint(x: (self.size.width / 2) + ground.size.width, y: groundPosition.y)
+                let rightmostNode = scrollLayer.children.sorted(by: {node1, node2 in node1.position.x > node2.position.x}).first as! SKSpriteNode
+                let rightmostPosition = scrollLayer.convert(rightmostNode.position, to: self)
+                let newPosition = CGPoint(x: rightmostPosition.x + rightmostNode.size.width, y: groundPosition.y)
                 ground.position = self.convert(newPosition, to: scrollLayer)
             }
         }
     }//scrollWorld()
     func scrollShallow() {
-        shallowLayer.position.x -= scrollSpeed * CGFloat(fixedDelta)
+        shallowLayer.position.x -= scrollSpeed * CGFloat(deltaTime)
         for shallowNode in shallowLayer.children as! [SKSpriteNode] {
             if shallowNode.position.x <= -1000 {
                 shallowNode.removeFromParent()
@@ -365,39 +392,46 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }//scrollShallow()
     func scrollBG() {
-        background.position.x -= (scrollSpeed / 4) * CGFloat(fixedDelta)
+        background.position.x -= (scrollSpeed / 4) * CGFloat(deltaTime)
         for BG in background.children as! [SKSpriteNode] {
             let BGPosition = background.convert(BG.position, to: self)
-            if BGPosition.x <= -BG.size.width / 2 - 284 {
-                let newPosition = CGPoint(x: 782.666, y: BG.position.y)
+            if BGPosition.x <= -497 {
+                let rightmostNode = background.children.sorted(by: {node1, node2 in node1.position.x > node2.position.x}).first as! SKSpriteNode
+                let rightmostPosition = background.convert(rightmostNode.position, to: self)
+                let newPosition = CGPoint(x: rightmostPosition.x + rightmostNode.size.width, y: 115.01)
                 BG.position = self.convert(newPosition, to: background)
             }
         }
     }//scrollBG()
     
     func scrollMG() {
-        middleground.position.x -= (scrollSpeed / 3) * CGFloat(fixedDelta)
+        middleground.position.x -= (scrollSpeed / 3) * CGFloat(deltaTime)
         for MG in middleground.children as! [SKSpriteNode] {
             let MGPosition = middleground.convert(MG.position, to: self)
-            if MGPosition.x <= -MG.size.width / 2 - 284 {
-                let newPosition = CGPoint(x: 868, y: MG.position.y)
-                MG.position = newPosition
+            if MGPosition.x <= -668 {
+                let rightmostNode = middleground.children.sorted(by: {node1, node2 in node1.position.x > node2.position.x}).first as! SKSpriteNode
+                let rightmostPosition = middleground.convert(rightmostNode.position, to: self)
+                let newPosition = CGPoint(x: rightmostPosition.x + rightmostNode.size.width, y: -95)
+                MG.position = self.convert(newPosition, to: middleground)
             }
         }
     }//scrollMG
     
     func scrollFG() {
-        foreground.position.x -= (scrollSpeed / 2) * CGFloat(fixedDelta)
+        foreground.position.x -= (scrollSpeed / 2) * CGFloat(deltaTime)
         for FG in foreground.children as! [SKSpriteNode] {
             let FGPosition = foreground.convert(FG.position, to: self)
-            if FGPosition.x <= -FG.size.width / 2 - 284 {
-                let newPosition = CGPoint(x: 908.5, y: FG.position.y)
-                FG.position = newPosition            }
+            if FGPosition.x <= -681 {
+                let rightmostNode = foreground.children.sorted(by: {node1, node2 in node1.position.x > node2.position.x}).first as! SKSpriteNode
+                let rightmostPosition = foreground.convert(rightmostNode.position, to: self)
+                let newPosition = CGPoint(x: rightmostPosition.x + rightmostNode.size.width, y: -105.5)
+                FG.position = self.convert(newPosition, to: foreground)
+            }
         }
     }//scrollFG
     
     func updateBoat() {
-        boatLayer.position.x -= (scrollSpeed + 100) * CGFloat(fixedDelta)
+        boatLayer.position.x -= (scrollSpeed + 100) * CGFloat(deltaTime)
         for boat in boatLayer.children as! [SKSpriteNode] {
             
             let boatPosition = boatLayer.convert(boat.position, to: self)
@@ -408,7 +442,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if boatSpawnTimer >= 24 {
             let newBoat = boat1.copy() as! SKSpriteNode
             boatLayer.addChild(newBoat)
-            let newPosition = CGPoint(x: 800, y: 65)
+            let newPosition = CGPoint(x: 2121.5, y: 140)
             newBoat.position = self.convert(newPosition, to: boatLayer)
             boatSpawnTimer = 0
         }
@@ -416,7 +450,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func updateObstacles() {
         
-        obstacleLayer.position.x -= scrollSpeed * CGFloat(fixedDelta)
+        obstacleLayer.position.x -= scrollSpeed * CGFloat(deltaTime)
         
         for obstacle in obstacleLayer.children as! [SKSpriteNode] {
             
@@ -426,16 +460,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             
         }
-        let randomArray: [CGFloat?] = [-100, -50, 0, 50, 100]
+        let randomArray: [CGFloat?] = [-200, -100, 0, 100, 200]
         let n = randomArray[Int(arc4random_uniform(4))]!
         let newNet = fishingNet.copy() as! SKSpriteNode
-        let newNPosition = CGPoint(x: 500 + n, y: -30)
+        let newNPosition = CGPoint(x: 800 + n, y: -30)
         let m = Int(arc4random_uniform(3))
         let itemArray: [SKSpriteNode?] = [item, item2, item3]
         let newItem = itemArray[m]?.copy() as! SKSpriteNode
-        let newIPosition = CGPoint(x: 600 + n, y: 28)
+        let newIPosition = CGPoint(x: 800 + n, y: 28)
         let newSeaweed = seaweed.copy() as! SKSpriteNode
-        let newSWPosition = CGPoint(x: 600 + n, y: 28)
+        let newSWPosition = CGPoint(x: 800 + n, y: 28)
         if netSpawnTimer >= 20 {
             obstacleLayer.addChild(newNet)
             newNet.position = self.convert(newNPosition, to: obstacleLayer)
@@ -456,36 +490,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }//updateObstacles()
     
     func waveFunc() {
-        waves.position.x -= scrollSpeed * CGFloat(fixedDelta)
+        waves.position.x -= scrollSpeed * CGFloat(deltaTime)
         for wave in waves.children as! [SKSpriteNode] {
             let wavePosition = waves.convert(wave.position, to: self)
             let limit = (scene?.size.width)!/2 + wave.size.width / 2
             if wavePosition.x <= -limit {
-                let newPosition = CGPoint(x: 958.5, y: wavePosition.y)
+                let rightmostNode = waves.children.filter({node in waves.convert(node.position, to: self).y == wavePosition.y}).sorted(by: {node1, node2 in node1.position.x > node2.position.x}).first as! SKSpriteNode
+                let rightmostPosition = waves.convert(rightmostNode.position, to: self)
+                let newPosition = CGPoint(x: rightmostPosition.x + rightmostNode.size.width, y: wavePosition.y)
                 wave.position = self.convert(newPosition, to: waves)
             }
         }
     }//waveFunc()
     func fisherBoatFunc() {
-        fisherBoat.position.x -= fishBoatSpeed * CGFloat(fixedDelta)
+        fisherBoat.position.x -= fishBoatSpeed * CGFloat(deltaTime)
         for fishingRod in fisherBoat.children as! [SKSpriteNode] {
             let obstaclePosition = fisherBoat.convert(fishingRod.position, to: self)
             if obstaclePosition.x <= -320 {
                 fishingRod.removeFromParent()
             }
         }
-        let randomArray: [CGFloat?] = [-100, -50, 0, 50, 100]
+        let randomArray: [CGFloat?] = [-200, -100, 0, 100, 200]
         let n = randomArray[Int(arc4random_uniform(4))]!
         let newHook = fisher.copy() as! SKSpriteNode
         let newHPosition = CGPoint(x: 600 + n, y: 300)
         if boatSpawnTimer > 14.29 && boatSpawnTimer < 14.31 {
             obstacleLayer.addChild(newHook)
             newHook.position = self.convert(newHPosition, to: fisherBoat)
-            if hookState == .connect {
-                newHook.physicsBody?.applyForce(CGVector(dx:0, dy: 20))
-                fishBoatSpeed = 20
-            }
         }
+        
     }//fisherBoatFunc()
     func buttonFunc(fileName: String, direction: String) {
         let button = childNode(withName: "\(fileName)") as! MSButtonNode
@@ -574,6 +607,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     override func update(_ currentTime: TimeInterval) {
+        if let old = lastTime {
+            deltaTime = currentTime - old
+        }
         updateObstacles()
         updateBoat()
         updateDistance()
@@ -597,7 +633,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }
         if ivulPU == true {
-            ivulTimer += fixedDelta
+            ivulTimer += deltaTime
             switch Int(ivulTimer) {
             case 0:
                 countDown.text = "3"
@@ -619,7 +655,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
         }//if powerUp == .ivul
         if refillPU == true {
-            refillTimer += fixedDelta
+            refillTimer += deltaTime
             health += CGFloat(0.4/60)
             refill.isUserInteractionEnabled = false
             if refillTimer >= 0.5 {
@@ -628,15 +664,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 refill.isUserInteractionEnabled = true
             }
         }
-        timer += fixedDelta
+        timer += deltaTime
         if timer - timer2 >= 1 && Int(timer.truncatingRemainder(dividingBy: 15)) == 0{
             x += 2.5
             timer2 += 15
         }
-        netSpawnTimer += fixedDelta * CFTimeInterval(x/60)
-        boatSpawnTimer += fixedDelta
-        itemSpawnTimer += fixedDelta * CFTimeInterval(x/60)
-        seaweedSpawnTimer += fixedDelta
+        netSpawnTimer += deltaTime * CFTimeInterval(x/60)
+        boatSpawnTimer += deltaTime
+        itemSpawnTimer += deltaTime * CFTimeInterval(x/60)
+        seaweedSpawnTimer += deltaTime
         let velocityY = hero.physicsBody?.velocity.dy ?? 0
         if holding == true {
             hero.physicsBody?.applyForce(CGVector(dx: 0, dy: diveForce))
@@ -677,5 +713,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         moneyCounterScore2.text =    String(sData.money)
         refCounter.text =            String(sData.refill)
         ivulCounter.text =           String(sData.ivul)
+        lastTime =                   currentTime
     }//override func update
 }//GameScene class

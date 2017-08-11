@@ -14,7 +14,7 @@ import GoogleMobileAds
 class MainMenu: SKScene {
     
     let sharedData = SharedData.data
-    var shopButton: MSButtonNode!
+    var adsButton: MSButtonNode!
     var highDistanceScore: SKLabelNode!
     var moneyCounterScore: SKLabelNode!
     var login: MSButtonNode!
@@ -25,16 +25,28 @@ class MainMenu: SKScene {
         login = childNode(withName: "login") as! MSButtonNode
         highDistanceScore = childNode(withName: "highDistanceScore") as! SKLabelNode
         moneyCounterScore = childNode(withName: "moneyCounterScore") as! SKLabelNode
-        shopButton = childNode(withName: "shopButton") as! MSButtonNode
-        shopButton.selectedHandler = {[unowned self] in
+        /*adsButton = childNode(withName: "adsButton") as! MSButtonNode
+        adsButton.selectedHandler = {
+            Products.store.requestProducts { success, products in
+                guard success else { return }
+                Products.store.restorePurchases()
+                let ads = products!.first(where: {product in product.productIdentifier == Products.removeAds})
+                if let adProduct = ads,
+                    StoreService.canMakePayments(),
+                    !Products.store.isProductPurchased(Products.removeAds) {
+                    Products.store.buyProduct(adProduct)
+                }
+            }
+        }*/
+        /*shopButton.selectedHandler = {[unowned self] in
             let shop = Shop(fileNamed: "Shop")
             shop?.backScene = self
-            shop?.scaleMode = .aspectFill
+            shop?.scaleMode = .aspectFit
             view.presentScene(shop)
-        }
+        }*/
         highDistanceScore.text = String(sharedData.high)
         moneyCounterScore.text = String(sharedData.money)
-        login.selectedHandler = {
+        login.selectedHandler = { [unowned self] in
             guard let authUI = FUIAuth.defaultAuthUI() else {
                 return
             }
@@ -45,11 +57,14 @@ class MainMenu: SKScene {
     }
     
     func showAd() {
+        guard !Products.store.isProductPurchased(Products.removeAds) else { return }
         banner = GADBannerView(adSize: kGADAdSizeSmartBannerLandscape)
-        banner.adUnitID = "ca-app-pub-3940256099942544/2934735716"
+        banner.adUnitID = "ca-app-pub-7382032268110091/6686251293" //test ads: "ca-app-pub-3940256099942544/2934735716"
         banner.rootViewController = MainMenu.controller
         MainMenu.controller.view.addSubview(banner)
-        banner.load(GADRequest())
+        let request = GADRequest()
+        //request.testDevices = [kGADSimulatorID]
+        banner.load(request)
     }
     
      override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -77,7 +92,7 @@ class MainMenu: SKScene {
 
 extension MainMenu: FUIAuthDelegate {
     func authUI(_ authUI: FUIAuth, didSignInWith user: FIRUser?, error: Error?) {
-        if let error = error {
+        if error != nil {
             return
         }
         guard let firUser = user else {

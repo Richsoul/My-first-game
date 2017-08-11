@@ -1,7 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,12 +20,48 @@
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <subviews>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="upperwave2" translatesAutoresizingMaskIntoConstraints="NO" id="gVB-Jg-R61">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="58"/>
+                            </imageView>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="wave2" translatesAutoresizingMaskIntoConstraints="NO" id="jg5-7z-Fws">
+                                <rect key="frame" x="0.0" y="35" width="375" height="100"/>
+                            </imageView>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" image="water" translatesAutoresizingMaskIntoConstraints="NO" id="AuY-cu-53o">
+                                <rect key="frame" x="0.0" y="135" width="375" height="532"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="loading..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xRm-eQ-iMA">
+                                <rect key="frame" x="126.5" y="315.5" width="122" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="AuY-cu-53o" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="51m-WH-RPZ"/>
+                            <constraint firstItem="jg5-7z-Fws" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="7Ic-0v-LSh"/>
+                            <constraint firstAttribute="bottom" secondItem="AuY-cu-53o" secondAttribute="bottom" id="IbB-Ig-ARv"/>
+                            <constraint firstItem="xRm-eQ-iMA" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="PcW-FQ-RMe"/>
+                            <constraint firstItem="jg5-7z-Fws" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" constant="35" id="VRj-9N-5Sl"/>
+                            <constraint firstItem="gVB-Jg-R61" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="W4n-fS-Ijl"/>
+                            <constraint firstItem="AuY-cu-53o" firstAttribute="top" secondItem="jg5-7z-Fws" secondAttribute="bottom" id="c61-ut-MHJ"/>
+                            <constraint firstAttribute="trailing" secondItem="jg5-7z-Fws" secondAttribute="trailing" id="kya-Vr-mKj"/>
+                            <constraint firstItem="gVB-Jg-R61" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="orO-Qe-fXO"/>
+                            <constraint firstAttribute="trailing" secondItem="AuY-cu-53o" secondAttribute="trailing" id="p1i-Oc-Y4Y"/>
+                            <constraint firstAttribute="trailing" secondItem="gVB-Jg-R61" secondAttribute="trailing" id="p2S-rK-495"/>
+                            <constraint firstItem="xRm-eQ-iMA" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="tNd-yh-zdo"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53" y="375"/>
+            <point key="canvasLocation" x="48.799999999999997" y="490.70464767616198"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="upperwave2" width="1792" height="58"/>
+        <image name="water" width="128" height="128"/>
+        <image name="wave2" width="1792" height="100"/>
+    </resources>
 </document>

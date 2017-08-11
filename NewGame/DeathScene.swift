@@ -29,7 +29,7 @@ class DeathScene: SKScene, SKPhysicsContactDelegate {
         shopButton.selectedHandler = {[unowned self] in
             let shop = Shop(fileNamed: "Shop")
             shop?.backScene = self
-            shop?.scaleMode = .aspectFill
+            shop?.scaleMode = .aspectFit
             view.presentScene(shop)
         }
         highestDistanceScore.text = String(sharedData.high)
